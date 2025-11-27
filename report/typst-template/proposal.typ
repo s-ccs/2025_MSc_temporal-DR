@@ -43,7 +43,17 @@ Traditional dimensionality reduction methods such as Principal Component Analysi
 PHATE, T-PHATE and CEBRA.AI are recent advanced time-focused algorithms. They reveal transitions and temporal patterns of brain activity, such as the existence of ring or point attractors in brain states that are otherwise not shown in traditional methods.
 \
 
+#table(
+columns: 2,
 
+[*Time Agnostic Methods*], [*Time Preserving Methods*], 
+[PCA],[TPHATE], 
+[UMAP], [CEBRA.AI],
+[PHATE], [BCNE], 
+[],[Dynamic t-SNE],
+
+)
+Table 1: Time Agnostic vs Time Preserving   Methods 
 
 == Related work
 
@@ -62,24 +72,25 @@ PHATE, T-PHATE and CEBRA.AI are recent advanced time-focused algorithms. They re
   The study states that BCNE generates clear time trajectories for visualization of brain activity in comparison to PCA, UMAP, PHATE, T-PHATE and CEBRA.
 \
 - T-SNE dimensionality reduction works by constructing a probability distribution over pairs of high-dimensional data points in such a way that similar points are assigned a higher probability while dissimilar points are assigned a lower probability. Then, t-SNE maps a similar probability distribution in the low-dimensional map, and it minimizes the Kullback–Leibler divergence between the two distributions with respect to the locations of the points in the map. T-SNE thus arranges points in the low-dimensional map such that their spatial relationships reflect the similarity structure present in the original high-dimensional data.
-
-
   But comparing each data point with every other data point will take a lot of time to compute. Hence, Barnes-Hut t-SNE method #cite(<barnes>) is introduced for faster computation by grouping distant points and treating each group as a single aggregated point, instead of treating the points individually. This drastically reduces the number of pairwise interactions that need to be computed. To do this grouping, the map is divided quad-trees, so the algorithm can quickly decide which groups are distant. This approach can be applied to EEG data visualization, where large amounts of high-dimensional time-series data are transformed into low-dimensional maps.
+  \
+- Using t-SNE on time-series data can result in visualizations that introduce unnecessary variability, which does not accurately reflect real patterns of change. Dynamic t-SNE  #cite(<dynamictsne>) is an approach that is an adaptation of t-SNE, a controllable trade-off between temporal coherence for accurate representation of the data's structure at the current time step and projection reliability to preserve data structure at a particular time step.  It works by finding a map that is both an accurate representation of the data currently (projection reliability) and one that is smoothly connected to the map from the previous time step (temporal coherence). The dynamic t-SNE cost tries to preserve the neighborhoods for each time step but also penalizes each point for unnecessarily moving between time steps. Hence, a hyperparameter is used as a penalty to choose how much to prioritize stability or smoothness over the projections. The dynamic t-SNE could be used to show the ERP components visualisation over time.
+ 
 
 = Planned Project
 == Research Questions
 
-- What is the best way to assess dimensionality reduction methods for EEG data among PCA, t-SNE, UMAP, PHATE, T-PHATE, CEBRA.AI, BCNE? 
+- What is the best way to assess dimensionality reduction methods for EEG data (Table 1)? 
 
 - Which dimensionality reduction method produces the most accurate low-dimensional manifold for revealing the temporal state of EEG data? 
 
 == Novelty of work 
-- We systematically evaluate time-preserving vs. time-agnostic dimensionality reduction methods (PHATE, T-PHATE, CEBRA.AI, BCNE vs. t-SNE, UMAP) specifically for simulated ERP data, which has not been thoroughly assessed in prior research.
+- We systematically evaluate time-preserving vs. time-agnostic dimensionality reduction methods as mentioned in Table 1, specifically for simulated ERP data, which has not been thoroughly assessed in prior research.
 - We demonstrate how different algorithms influence the interpretability of ERP components.
     
 
 == Goals
-To assess data simulation using the UnfoldSim package in Julia and use Python packages to implement PHATE, T-PHATE, CEBRA.AI and BCNE.
+To assess data simulation using the UnfoldSim package in Julia and use Python packages to implement methods (see Table 1).
 
 === Main Goals <mainGoals>
 #v(0.3em)
@@ -92,7 +103,7 @@ To assess data simulation using the UnfoldSim package in Julia and use Python pa
   + #goal("Implement dimensionality reduction and visualization techniques on simulated EEG data in Python.") <goal2>  
   
   + #goal("Understand and compare the methods based on the ability to  preserve the structure of data.") <goal3>  
-  + #goal("Review the research papers that use PHATE, T-PHATE, Cebra.AI, BCNE methods for EEG datasets.") <goa14>  
+  + #goal("Review the research papers that use PHATE, T-PHATE, Cebra.AI, BCNE and various methods for EEG datasets (see Table 1).") <goa14>  
   
   + #goal("Discover hidden patterns in each method and state which method provides the clear low-dimensional visualization.") <goal5>
   + #goal("Documenting the steps and procedure for easy understanding.") <goal6>
@@ -110,7 +121,7 @@ To assess data simulation using the UnfoldSim package in Julia and use Python pa
 
 
 *Phase 2*
- - Implementation: Use dual approach:  Julia for data simulation along with Python for its libraries to perform analysis and run algorithms: PCA, t-SNE, UMAP, PHATE, T-PHATE and Cebra.AI. Validate the low-dimensional maps by using metrics on how accurate the maps are.
+ - Implementation: Use dual approach:  Julia for data simulation along with Python for its libraries to perform analysis and run algorithms as mentioned in table 1. Validate the low-dimensional maps by using metrics on how accurate the maps are.
 
 - Different studies have used different assessment criteria such as DeMAP, K-nearest neighbor (KNN), Representational Similarity Analysis, Pearson correlation. 
 
@@ -143,20 +154,21 @@ To assess data simulation using the UnfoldSim package in Julia and use Python pa
   {
     import timeliney: *
       
-    headerline(group([*Nov*],[*Dec*],[*Jan*],[*Feb*],[*Mar*],[*Apr*],[*May*]))
+    headerline(group([*Nov*],[*Dec*],[*Jan*],[*Feb*],[*Mar*],[*Apr*],[*May*],[*June*]))
     
     task("Literature review", (0, 3), style: (stroke: 2pt + gray))
     task("Writing Proposal", (0.5, 1), style: (stroke: 2pt + gray))
     task("Implementation of algorithms", (1, 5.5), style: (stroke: 2pt + gray))
     task("Metrics evaluation", (3, 5.5), style: (stroke: 2pt + gray))
     task("Review and documentation", (4.5,7), style: (stroke: 2pt + gray))
+     task("Final submission", (7,8), style: (stroke: 2pt + gray))
 
     milestone(
       at: 6.5,
       style: (stroke: (dash: "dashed")),
       align(center, [
         *Main goal completion*\
-        May 2025
+        June 2026
       ])
     )
   }
