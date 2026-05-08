@@ -1,0 +1,1 @@
+The BCNE model is trained on the grand average ERP of all trials to obtain a clean and stable reference trajectory. The resulting embedding space is then used for projecting individual trials.
