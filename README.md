@@ -6,7 +6,20 @@
 **Year:** *2022*
 
 ## Project Description
->provide a short description of the main goals - just copy from the proposal
+> Electroencephalographic data is a very high-dimensional, complex, and noisy time-series record of 
+neural activity. These signals contain meaningful information about how the brain states change over 
+time, but their complexity makes it a challenge to analyze and visualize them directly. The information 
+contained within this massive dataset is encoded in the continuous temporal flow of brain states. Such 
+high-dimensionality and complexity, including the various features, present a fundamental barrier to 
+robust visualization and analysis. To study and identify the patterns of neural activity, also known as 
+manifolds, dimensionality reduction methods are used to simplify the data while keeping the important 
+information about how brain states evolve over time (Perich et al., 2025).
+More recent approaches, such as PHATE (Potential of Heat-diffusion for Affinity-based Transition 
+Embedding), T-PHATE (Temporal-PHATE), and CEBRA.AI (Contrastive Embedding for Behavior and 
+Representation Analysis) are designed to better preserve the temporal and structural relationships 
+in neural data. In this research, we will compare these advanced, time-aware algorithms along with 
+standard dimensionality reduction approaches like PCA (Principal Component Analysis) and t-SNE. 
+The goal is to identify which method can provide the most accurate data of brain states.
 
 ## Zotero Library Path
 >Please provide the link to the Zotero group here or include a `Bib`-File in the `report` folder
