@@ -1,9 +1,9 @@
-# **MSc-Thesis:** On the simulation of GIT-Templates for BSc-Theses
+# **MSc-Thesis:** Evaluating Temporal Dimensionality Reduction Methods for ERP-Structured EEG Data
 **Author:** *Benedikt Ehinger*
 
-**Supervisor(s):** *Supervisor 1*, *Supervisor 2*
+**Supervisor(s):** *Vladimir Mikheev*
 
-**Year:** *2022*
+**Year:** *2026*
 
 ## Project Description
 > Electroencephalographic data is a very high-dimensional, complex, and noisy time-series record of 
@@ -11,13 +11,16 @@ neural activity. These signals contain meaningful information about how the brai
 time, but their complexity makes it a challenge to analyze and visualize them directly. The information 
 contained within this massive dataset is encoded in the continuous temporal flow of brain states. Such 
 high-dimensionality and complexity, including the various features, present a fundamental barrier to 
-robust visualization and analysis. To study and identify the patterns of neural activity, also known as 
+robust visualization and analysis. 
+
+To study and identify the patterns of neural activity, also known as 
 manifolds, dimensionality reduction methods are used to simplify the data while keeping the important 
 information about how brain states evolve over time (Perich et al., 2025).
 More recent approaches, such as PHATE (Potential of Heat-diffusion for Affinity-based Transition 
-Embedding), T-PHATE (Temporal-PHATE), and CEBRA.AI (Contrastive Embedding for Behavior and 
-Representation Analysis) are designed to better preserve the temporal and structural relationships 
-in neural data. In this research, we will compare these advanced, time-aware algorithms along with 
+Embedding), T-PHATE (Temporal-PHATE), and BCNE (Brain-dynamic Convolutional-Network-based Embedding) are designed to better preserve the temporal and structural relationships 
+in neural data. 
+
+In this research, we will compare these advanced, time-aware algorithms along with 
 standard dimensionality reduction approaches like PCA (Principal Component Analysis) and t-SNE. 
 The goal is to identify which method can provide the most accurate data of brain states.
 
@@ -25,11 +28,25 @@ The goal is to identify which method can provide the most accurate data of brain
 >Please provide the link to the Zotero group here or include a `Bib`-File in the `report` folder
 
 ## Instruction for a new student
->If a fellow student wants to reproduce all your results. What scripts, in which order, with which data need to be run?
+>Simulate data using Unfoldsim in julia (refer Simulatedata.pynb file)
+>Approach: Trial level projection
+1. Approach: Trial level projection
+The BCNE model is trained on the grand average ERP of all trials to obtain a clean and stable reference trajectory. 
+The resulting embedding space is then used for projecting individual trials.
+
+Steps:
+1. Include the simulated data file in the data folder.
+   a. Data can be simulated in Julia using Unfoldsim package, refer simulateData.jl file.
+   b. Replace the csv filename with your file in bcne_train.py
+For BCNE (non linear dimensionality reduction):
+2. Run python bcne_train.py for training global average of all trials.
+3. Run python trial_analysis for projecting individual trials through the trained model.
+4. For visualisation purpose, trial_analysis will project 200 trials to have clean visuals and to avoid clutter.
+For PCA (linear dimensionality reduction)
+5. Run pca.py for comparison.
 >
->Be as specific as possible. Plan to spend **at least 1h** on this.
->
->Optional: Add a pipeline plot in which the different steps are displayed together with the corresponding scripts.
+2. Approach: Average By condition
+
 
 ## Overview of Folder Structure 
 
