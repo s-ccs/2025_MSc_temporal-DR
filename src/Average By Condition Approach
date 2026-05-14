@@ -1,0 +1,7 @@
+Code description:
+The pipeline follows the approach described in Revealing Neurocognitive and Behavioral Patterns by Unsupervised Manifold Learning from Dynamic Brain Data (Zhou et al.). 
+EEG trials are averaged per condition-continuous group to produce clean ERP signals, which are then preprocessed using temporal autocorrelation smoothing (TimeCORR) and spatial grid mapping via Gromov-Wasserstein optimal transport (NeuroMap), converting each timepoint into a 6×6 image.
+A convolutional neural network is trained unsupervised using a recursive KL divergence strategy across four stages, where each stage recomputes the target similarity matrix from progressively deeper layer activations.
+The trained BCNE model is then used to embed all group-averaged ERP epochs into a 2D space, which is compared against standard time-agnostic methods (PCA, t-SNE, UMAP, PHATE) and T-PHATE using KNN accuracy, RSA, trustworthiness, and continuity metrics. 
+
+ 
