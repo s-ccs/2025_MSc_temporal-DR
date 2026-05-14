@@ -4,4 +4,11 @@ EEG trials are averaged per condition-continuous group to produce clean ERP sign
 A convolutional neural network is trained unsupervised using a recursive KL divergence strategy across four stages, where each stage recomputes the target similarity matrix from progressively deeper layer activations.
 The trained BCNE model is then used to embed all group-averaged ERP epochs into a 2D space, which is compared against standard time-agnostic methods (PCA, t-SNE, UMAP, PHATE) and T-PHATE using KNN accuracy, RSA, trustworthiness, and continuity metrics. 
 
+Steps to run:
+1. Include the simulated data file in the data folder.
+   a. Data can be simulated in Julia using Unfoldsim package, refer simulateData.jl file.
+   b. Replace the csv filename with your file in main.py.
+For BCNE (non linear dimensionality reduction):
+2. Run python main.py to train the model for condition-continuous groups.
+3. Run python compare_methods.py for comparing the model with PCA, t-SNE, UMAP, PHATE, TPHATE.
  
