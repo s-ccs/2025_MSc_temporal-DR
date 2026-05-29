@@ -3,7 +3,7 @@
 #import "utils/global.typ": *
 
 
-#let abstract = [Electroencephalographic (EEG) data is a high-dimensional, noisy time series capturing the continuous evolution of neural response patterns. Dimensionality reduction methods such as @PCA and @tSNE have been used to analyze such data; however, they group time points by amplitude similarity rather than temporal order, making them unable to preserve the sequential structure. Existing time-aware approaches, such as @T-PHATE and @BCNE, address this by explicitly encoding temporal autocorrelation into the embedding, yet both have only been demonstrated on continuous recordings such as fMRI and not on epoched @ERP structured @EEG data.
+#let abstract = [Electroencephalographic (EEG) data is a high-dimensional, noisy time series capturing the continuous evolution of neural response patterns. Dimensionality reduction methods such as @PCA and @tSNE have been used to analyze such data; however, they group time points by amplitude similarity rather than temporal order, making them unable to preserve the sequential structure. Existing time-aware approaches, such as @T-PHATE and @BCNE, address this by explicitly encoding temporal autocorrelation into the embedding, yet both have only been demonstrated on continuous recordings such as fMRI and not on epoched @ERP -structured @EEG data.
 
 This study addresses this research gap and evaluates time-aware dimensionality reduction methods on @ERP structured @EEG data, investigating whether temporal awareness yields more meaningful embeddings than time-agnostic approaches. We simulated @ERP components using the UnfoldSim package and evaluated @T-PHATE and @BCNE along with standard methods under two approaches: condition-averaged input and single-trial projection via grand-average. Our results show that @T-PHATE and @BCNE recover temporally ordered trajectories with condition-specific divergences, while time-agnostic methods yield fragmented embeddings. These findings suggest that time-aware methods offer a more faithful representation of @ERP data and can be used for exploratory analysis of complex experimental designs.
 ]
@@ -181,7 +181,7 @@ The brain generates electrical signals that can be recorded at the scalp using @
 
 Standard dimensionality reduction approaches, such as @PCA and @tSNE share a fundamental limitation when applied to @ERP data: they treat each time point as an independent observation without explicitly modeling the relationship between adjacent time points @polivcar. This assumption ignores the most important property of @ERP data, temporal continuity. Such methods embed time points solely based on amplitude similarity, producing fragmented structures in which the chronological flow of brain states is often lost.
 
-Neural activity follows a trajectory in the neural state space, with the structure geometry representing the stages of neural activity. Nonlinear dimensionality reduction methods like @tSNE, @UMAP, and @PHATE typically assume simple underlying manifolds and may not be able to represent complex topologies @chung2021neural. Because these approaches do not encode temporal order, they cannot accurately reconstruct the sequential structure of @ERP data.
+Neural activity follows a trajectory in the neural state space, with the structure geometry representing the stages of neural activity @cunningham2014dimensionality. Nonlinear dimensionality reduction methods like @tSNE, @UMAP, and @PHATE typically assume simple underlying manifolds and may not be able to represent complex topologies @chung2021neural. Because these approaches do not encode temporal order, they cannot accurately reconstruct the sequential structure of @ERP data.
 
 Time-aware dimensionality reduction methods address this by incorporating temporal structure directly into the embedding. @T-PHATE and @BCNE methods are two examples that produce temporally ordered embeddings on continuous neural recordings.
 
@@ -443,13 +443,13 @@ At the first recursive stage m1, the target similarity distribution was computed
 == Trial-level projection 
 
 The BCNE model was trained in an unsupervised manner on the winsorized grand average, without using condition or continuous labels.
-Winsorization replaces extreme amplitude values with the boundary values at the chosen percentiles rather than removing them entirely,  to prevent extreme amplitude from distorting the average value @winsorizing_wiki. 
+Winsorization replaces extreme amplitude values with the boundary values at the chosen percentiles rather than removing them entirely,  to prevent extreme amplitude from distorting the average value @dixon1974trimming. 
 Condition labels were used only post-hoc to compute condition-averaged embeddings for visualization, and played no role in model optimization.
 
 1. Grand-average @ERP computation: All trials are averaged to produce a single (channel, time) @ERP. This signal is the low-noise representation of the event-locked component structure for the simulated dataset.
 2. @BCNE training on the grand-average: Temporal smoothing, spatial mapping, and recursive CNN training proceed exactly as in the Average by Condition pipeline, but with a single input @ERP instead of condition-continuous groups.The trained @BCNE model defines a fixed coordinate system based on the grand average. 
 
-  All @ERP trials, regardless of condition, follow the same basic temporal sequence: P100 at 100 ms, N170 at 170 ms, P300 at 300 ms, and N400 at 400 ms. This temporal structure is captured by the grand average, and @BCNE learns a low-dimensional coordinate system to represent it. Before the model trains on any data, the channel amplitudes are first temporally smoothed using an autocorrelation map, which weights each time point by how strongly it relates to nearby time points. The smoothed amplitudes are then remapped onto a 2D grid using optimal transport (@refBCNE), which arranges channels so that channels with similar activity end up as neighbors on the grid. This grid is fixed once from the grand average.
+  All @ERP trials, regardless of condition, follow the same basic temporal sequence: P100 at 100 ms, N170 at 170 ms, P300 at 300 ms, and N400 at 400 ms @KAPPENMAN2021117465. This temporal structure is captured by the grand average, and @BCNE learns a low-dimensional coordinate system to represent it. Before the model trains on any data, the channel amplitudes are first temporally smoothed using an autocorrelation map, which weights each time point by how strongly it relates to nearby time points. The smoothed amplitudes are then remapped onto a 2D grid using optimal transport (@refBCNE), which arranges channels so that channels with similar activity end up as neighbors on the grid. This grid is fixed once from the grand average.
     
   Every trial passes through this same fixed transformation. The model then learns a coordinate system where each time point gets a 2D position based on the spatial pattern of channel amplitudes on this grid at that moment. When an individual trial is projected, its amplitude pattern on the grid at each time point determines its 2D position.
 
@@ -491,7 +491,8 @@ The architecture comprised three convolutional layers (filters: 3, 16, 32) follo
 ) <tbl:hyperparameters_BCNE>
 
 === Comparison with @PCA
-The projected trajectories were visualized against the reference grand-average trajectory and compared with a linear baseline (@PCA) trained on the same grand-average and used in the same projection mode. The directions of maximum variance were computed from the grand average, and then each trial was projected onto the two principal components with maximum variance @artoni2018applying.
+The projected trajectories were visualized against the reference grand-average trajectory and compared with a linear baseline (@PCA) trained on the same grand-average and used in the same projection mode. The directions of maximum variance were computed from the grand average, and then each trial was projected onto the two principal components with maximum variance @kayser2003optimizing. Principal components were learned from the grand average and applied as a fixed projection to each trial.
+
 In this study, only @BCNE and @PCA as baseline comparisons were used for single-trial projection, as both define an explicit fixed mapping learned from the grand average that can be applied to new data. The out-of-sample projection capabilities of tSNE, UMAP, PHATE, and T-PHATE were not evaluated @anuragi2024mitigating.
 
 
@@ -501,7 +502,9 @@ The automated pipeline was implemented on top of the trial-level @BCNE projectio
 
 The grand average used for training was computed by first winsorizing all individual trials at the 2nd–98th percentiles of the amplitude distribution, then averaging across trials. This replaced extreme amplitude values with boundary values rather than removing them, ensuring that amplitude spikes did not distort the reference coordinate system used for projecting individual trials.
 
-After projecting all individual trials without winsorization through the fixed @BCNE coordinate system, each trial received an outlier score calculated as the mean Euclidean distance between its 2D trajectory and its condition mean trajectory. Trials whose score exceeded the mean plus three standard deviations were flagged as outlier trials. The outlier score reflects the overall geometric deviation of a trial from its expected temporal path in the embedding space.
+After projecting all individual trials without winsorization through the fixed @BCNE coordinate system, each trial received an outlier score calculated as the mean Euclidean distance between its 2D trajectory and its condition mean trajectory. Trials with scores exceeding three standard deviations above the mean were flagged as outliers, following a statistical approach based on a threshold frequently used to detect unusually deviant EEG epochs @delorme2001automatic. The outlier score reflects the overall geometric deviation of a trial from its expected temporal path in the embedding space.
+
+
 
 
 == Rationale for two approaches
@@ -629,7 +632,7 @@ conditions, with temporal order maintained as a continuous path from early to la
 
 The following standard quantitative metrics were computed:
 1. *@KNN* accuracy measures local condition separability
-2. *Trustworthiness and continuity* measure how faithfully local and global neighborhood structure is preserved between the high-dimensional and 2D space. 
+2. *Trustworthiness and continuity* measure how faithfully local and global neighborhood structure is preserved between the high-dimensional and 2D space @refBCNE. 
 
 
 #figure(
@@ -793,7 +796,7 @@ fragmented embeddings.
 Quantitative evaluation of dimensionality reduction embeddings is an open challenge due to the lack of neutral temporal structure preservation.
 
 The metric proposed for @T-PHATE in @refTPHATE is optimized for diffusion-based embeddings, while the metric used in @refBCNE targets condition separability. Hence, neither was designed to evaluate temporal structure preservation as a standalone property.
-Specifically, @T-PHATE used the @DeMAP metric, which measures how well the low-dimensional embedding preserves diffusion-based affinities from the high-dimensional space. Since @T-PHATE optimized directly for these affinities, @DeMAP favored it by design and therefore is not well-suited as a neutral comparison across all methods.
+Specifically, @T-PHATE used the @DeMAP metric, which measures how well the low-dimensional embedding preserves diffusion-based affinities from the high-dimensional space @refPHATE. Since @T-PHATE optimized directly for these affinities, @DeMAP favored it by design and therefore is not well-suited as a neutral comparison across all methods.
 
 @BCNE (@refBCNE) used @KNN classification accuracy in the embedding
 space for structure preservation, where the number of neighbors is determined by grid search. However, @KNN accuracy measures condition separability rather than temporal structure, making it unsuitable 
@@ -832,7 +835,7 @@ The outlier detection results demonstrated a practical use case that is unique
 to @BCNE among the six methods evaluated. Flat trials and noisy trials produced qualitatively distinct signatures in the embedding space: a flat trial collapsed to a stationary point, while a noise trial preserved the general loop shape but was displaced outside the normal trial cloud. This geometric readability means the nature of the trial data is directly interpretable from the trajectory position.
 
 Standard @EEG artifact rejection uses amplitude 
-threshold, which may fail to distinguish between a 
+threshold @Zhang2024, which may fail to distinguish between a 
 large brain response and a muscle artifact 
 of the same size. @BCNE can detect such artifacts through 
 trajectory shape rather than amplitude.
