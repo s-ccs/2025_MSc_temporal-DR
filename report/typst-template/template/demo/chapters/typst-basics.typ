@@ -33,4 +33,4 @@ For further reference, the typst official library reference, tutorial and guides
 
 #pagebreak(weak: true)
 == Citing References <subsec:citing>
-We can cite references defined in our bibliography file easily @QayyumY-sac2022. Once a reference is cited, it will appear in the bibliography at the end of the thesis.
+We can cite references defined in our bibliography file easily //@QayyumY-sac2022. Once a reference is cited, it will appear in the bibliography at the end of the thesis.

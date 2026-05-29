@@ -1,6 +1,6 @@
 #import "../utils/global.typ": *
 #import "../utils/symbols.typ": *
 
-This typst template is intended for use by UiT students to write their Bachelor's or Master's thesis, or any other document requiring a similar format. Although it meets the official requirements set by the UiT, this template is *unofficial*, and students should verify with their supervisor whether it can be used to typeset the thesis or not. The styling and layout for this thesis template has been largely inspired by Erlend Graff's #LaTeX template. #footnote[see #link("https://github.com/egraff/uit-thesis")]
+The human brain generates complex electrical signals. When neurons fire in response to sensory stimuli and cognitive tasks, the patterns of these signals can be captured at the scalp using electroencephalography (EEG). Embedded within this high-dimensional, noisy signal is structured information about how the brain evolves through distinct states
 
-In addition to demonstrating how this template will typeset your content, this document is meant to serve as a helpful reference for how to use its features. The remaining chapters will present a number of useful examples and should be useful for users regardless of their experience with typst.
+The central challenge is one of visualization and representation of these brain states. Humans can interpret in at most three dimensions, yet EEG data lives in a space with as many dimensions as there are channels multiplied by temporal features. To make this data interpretable, dimensionality reduction techniques can help to project the data from its native high-dimensional space into a low-dimensional representation while preserving as much meaningful structure as possible.

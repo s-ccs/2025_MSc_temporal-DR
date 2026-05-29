@@ -34,7 +34,7 @@
       #text(
         14pt,
         weight: "bold",
-        font: ("Open Sans", "Noto Sans"),
+       // font: ("Open Sans", "Noto Sans"),
         "Supervisors",
       )
       #grid(
