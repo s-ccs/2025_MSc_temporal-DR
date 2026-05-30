@@ -17,7 +17,6 @@
 #import "modules/abstract.typ": abstract-page
 #import "modules/acknowledgements.typ": acknowledgements-page
 #import "modules/abbreviations.typ": abbreviations-page
-
 // Workaround for the lack of an `std` scope.
 #let std-bibliography = bibliography
 #let std-smallcaps = smallcaps
@@ -366,6 +365,7 @@
   // List of abbreviations
   abbreviations: none,
   // The content of your work.
+  declaration: none,
   body,
 ) = {
   // Set the document's metadata.
@@ -787,7 +787,10 @@
   // Display appendix after the bibilography
   in-appendix.update(true)
   appendix
-
+  if declaration != none {
+  pagebreak()
+  declaration
+}
   // Display back page
   backpage()
 }

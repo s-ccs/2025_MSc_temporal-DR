@@ -1,0 +1,9 @@
+// Choose the version in English or German, with the appropriate middle paragraph depending on whether or not you used AI tools.
+
+
+= Declaration of authorship
+
+I hereby declare that the work presented in this thesis is entirely my own. I did not use any other sources and references than the listed ones. I have marked all direct or indirect statements from other sources contained therein as quotations. Neither this work nor significant parts of it were part of another examination procedure. I have not published this 
+work in whole or in part before. The electronic copy is consistent with all submitted hard copies.
+
+Date and Signature:
