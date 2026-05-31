@@ -856,16 +856,16 @@ The second type was a noise trial, in which the signal was replaced by Gaussian 
 Together, these results confirmed that the @BCNE projection approach captures the trial's underlying nature directly from its two-dimensional embedding space, without requiring labels or manual inspection. A collapsed point indicates signal loss, while irregularly scattered embedding indicates noise corruption. 
 
 #figure(
-  image("template/demo/figures/Projection/Projection-10conditions/bcne_outliers_10conditions.png", width: 100%),
+  image("template/demo/figures/Projection/Projection-2conditions/bcne_outliers.png", width: 100%),
   caption: dynamic-caption(
     [An outlier trial and a typical trial projected into the two-dimensional @BCNE embedding space, alongside the outlier score distribution for the ten-condition design. Trials exceeding the detection threshold of 2.677 are flagged as outliers.],
       [Outlier score distribution for 10-condition dataset]
 
   ),
-) <fig:bcne_outliers_10conditions>
+) <fig:bcne_outliers_2conditions>
 
 To analyze outlier trials detection beyond visual inspection, an outlier scoring pipeline was implemented. 
-Each trial was projected through the fixed @BCNE coordinate system after winsorization, and its deviation from the condition mean trajectory was calculated as the mean Euclidean distance across all time points in the two-dimensional embedding space. Trials exceeding the mean plus three standard deviations were flagged as outliers. As shown in @fig:bcne_outliers_10conditions, the outlier score distribution for the ten-condition design showed that 11 trials exceeded the detection threshold of 2.677. The worst outlier, with a score of 3.362, produced a trajectory that deviated substantially from the condition mean, while a typical trial closely followed the expected loop. The majority of trials clustered below 2.0, confirming that geometrically deviant trials formed a distinct tail in the distribution and were identifiable without manual inspection.
+Each trial was projected through the fixed @BCNE coordinate system after winsorization, and its deviation from the condition mean trajectory was calculated as the mean Euclidean distance across all time points in the two-dimensional embedding space. Trials exceeding the mean plus three standard deviations were flagged as outliers. As shown in @fig:bcne_outliers_2conditions, the outlier score distribution for the ten-condition design showed that 11 trials exceeded the detection threshold of 2.677. The worst outlier, with a score of 3.362, produced a trajectory that deviated substantially from the condition mean, while a typical trial closely followed the expected loop. The majority of trials clustered below 2.0, confirming that geometrically deviant trials formed a distinct tail in the distribution and were identifiable without manual inspection.
 
 
 #pagebreak()
