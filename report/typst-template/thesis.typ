@@ -61,7 +61,7 @@ This section contains additional figures that support the results presented but 
     [@BCNE condition separation for the two-condition design shown across 
     all four recursive stages m1 to m4, illustrating how separation becomes 
     more compact with each stage.],
-    [Condition-averaged embeddings for the four-condition design.]
+    [@BCNE recursive stage embeddings for the two-condition design.]
   ),
 ) <fig:fig_4condition>
 
@@ -765,12 +765,14 @@ As shown in @fig:bcne_continuous_2cond, the continuous-level embeddings produced
   ),
 ) <fig:bcne_trial_conditions_2cond>
 
-As shown in @fig:bcne_trial_conditions_2cond, individual trials confirmed that temporal structure was preserved at the trial level. Car trials formed a compact cloud around the car mean trajectory, while face trials showed a wider spread particularly at N170, consistent with the larger amplitude variability of the face condition. The condition mean trajectories remained distinguishable within the trial clouds.
+As shown in @fig:bcne_trial_conditions_2cond, individual trials confirmed that temporal structure was preserved at the trial level. Car trials formed a compact cloud around the car mean trajectory, while face trials showed a wider spread, particularly at N170, consistent with the larger amplitude variability of the face condition. The condition mean trajectories remained distinguishable within the trial clouds.
 
 #figure(
   image("template/demo/figures/Projection/Projection-2conditions/bcne_trial_continuous.png", width: 100%),
   caption: dynamic-caption(
-    [@BCNE single-trial continuous projection for the two-condition design. Continuous levels separate visible at P300.],
+    [@BCNE single-trial continuous projection for the two-condition design. 
+Continuous levels separate smoothly from −5.0 to +5.0 at the P300 component, with no 
+separation visible at other @ERP component latencies.],
     [@BCNE single-trial continuous projection for the two-condition design.],
   ),
 ) <fig:bcne_trial_continuous_2cond>
@@ -798,7 +800,7 @@ As shown in @fig:bcne_trial_continuous_2cond, the single-trial continuous projec
   image("template/demo/figures/Projection/Projection-10conditions/bcne_trial_continuous_10conditions.png", width: 110%),
   caption: dynamic-caption(
     [@BCNE continuous trial trajectories for the ten-condition design, showing fanning at P300 ordered by continuous value. No fanning is visible at other component latencies, confirming selective recovery of the continuous effect.],
-    [@BCNE continuous trial trajectories for the ten-condition design.],
+    [@BCNE continuous trial trajectories for the ten-condition design.]
   ),
 ) <fig:bcne_trial_continuous_10conditions>
 
