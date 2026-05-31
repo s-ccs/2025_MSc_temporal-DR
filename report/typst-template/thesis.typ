@@ -941,7 +941,7 @@ Hence, this study evaluates embeddings qualitatively against the known ground tr
 This study demonstrated that time-aware dimensionality reduction methods produced qualitatively different and more meaningful embeddings than time-agnostic methods when applied to @ERP structured @EEG data, directly addressing RQ1. @T-PHATE and @BCNE both recovered temporally ordered trajectories with condition-specific divergences at the correct @ERP latencies, while @PCA, @tSNE, @UMAP, and @PHATE yielded fragmented or unordered embeddings that did not reflect the sequential structure of the data.
 
 Both methods encode temporal autocorrelation, but differ in their core mechanism. @T-PHATE maintains temporal structure throughout the embedding via its dual-view diffusion 
-framework, meaning temporal order continuously shapes the geometry of the final output. @BCNE, by contrast, encodes temporal autocorrelation as a preprocessing transformation applied once before the CNN training stage, after which the model optimizes for pairwise similarities between time points. @T-PHATE therefore produced geometrically cleaner, more structured loops, while @BCNE produces more compact trajectories.
+framework, meaning temporal order continuously shapes the geometry of the final output. @BCNE, by contrast, encodes temporal autocorrelation as a preprocessing transformation applied once before the CNN training stage, after which the model optimizes for pairwise similarities between time points. @T-PHATE therefore produced geometrically cleaner, more structured loops, while @BCNE produced more compact trajectories.
 
 //after which the model optimizes a KL divergence loss over pairwise amplitude similarities between time points
 

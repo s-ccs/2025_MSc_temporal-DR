@@ -50,7 +50,7 @@ columns: 2,
 [PCA],[TPHATE], 
 [UMAP], [CEBRA.AI],
 [PHATE], [BCNE], 
-[t-SNEt-SNE],[Dynamic t-SNE],
+[t-SNE],[Dynamic t-SNE],
 
 )
 Table 1: Time Agnostic vs Time Preserving   Methods 
