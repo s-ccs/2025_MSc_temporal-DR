@@ -4,7 +4,7 @@
 #let custom-print-title(entry) = {
   let short = entry.at("short")
   let long = entry.at("long", default: "")
-  [#strong(short) #h(0.5em) #long]
+  [#strong(short) #h(0.3em) #long]
 }
 
 #let abbreviations-page(abbreviations) = {
@@ -12,6 +12,7 @@
   align(left)[
     = List of Abbreviations
     #v(1em)
+    #set par(spacing: 1.7em)
     #print-glossary(
       abbreviations,
       user-print-title: custom-print-title,

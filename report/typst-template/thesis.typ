@@ -6,16 +6,8 @@
 
 #let abstract = [Electroencephalographic (EEG) data is a high-dimensional, noisy time series capturing the continuous evolution of neural response patterns. Dimensionality reduction methods such as @PCA and @tSNE have been used to analyze such data; however, they group time points by amplitude similarity rather than temporal order, making them unable to preserve the sequential structure. Existing time-aware approaches, such as @T-PHATE and @BCNE, address this by explicitly encoding temporal autocorrelation into the embedding, yet both have only been demonstrated on continuous recordings such as fMRI and not on epoched #[ERP]-structured @EEG data.
 
-This study addresses this research gap and evaluates time-aware dimensionality reduction 
-methods on @ERP structured @EEG data, investigating whether temporal awareness yields more 
-meaningful embeddings than time-agnostic approaches. @ERP components were simulated using 
-the UnfoldSim package, and @T-PHATE and @BCNE were evaluated along with standard methods 
-under two approaches: condition-averaged input and single-trial projection via grand 
-average. The results show that @T-PHATE and @BCNE recover temporally ordered trajectories 
-with condition-specific divergences, while time-agnostic methods yield fragmented 
-embeddings. These findings suggest that time-aware methods offer a more faithful 
-representation of @ERP data and can be used for exploratory analysis of complex 
-experimental designs.
+This study addresses this research gap and evaluates time-aware dimensionality reduction methods on @ERP structured @EEG data, investigating whether temporal awareness yields more meaningful embeddings than time-agnostic approaches. @ERP components were simulated using the UnfoldSim package, and @T-PHATE and @BCNE were evaluated along with standard methods under two approaches: condition-averaged input and single-trial projection via grand average. The results show that @T-PHATE and @BCNE recover temporally ordered trajectories with condition-specific divergences, while time-agnostic methods yield fragmented embeddings. These findings suggest that time-aware methods offer a more faithful 
+representation of @ERP data and can be used for exploratory analysis of complex experimental designs.
 
 ]
 
@@ -42,41 +34,18 @@ This section contains additional figures that support the results presented but 
     [Neuromaps illustrating how channel-correlation patterns evolve across @ERP peak latencies for 64 channels represented by 8 x 8 grid. Red and blue regions reflect changes in channel activity over time.],
     [Neuromaps 8 x 8 grid at @ERP peak latencies.]
   ),
-) <fig:second_additional_figure>
+) <fig:neuromaps_erp>
 
 
 #figure(
   image("template/demo/figures/AvgByCondition/2conditions-AvgByCondition/bcne_condition_recursive_2cond.png", width: 60%),
   caption: dynamic-caption(
     [@BCNE condition separation for the two-condition design shown across 
-    all four recursive stages m1 to m4, illustrating how separation becomes 
-    more compact with each stage.],
+    all four recursive stages (m1 to m4), illustrating how separation becomes more compact with each stage.],
     [@BCNE condition separation across recursive stages, two-condition design.]
   ),
 ) <fig:bcne_condition_recursive_2cond>
 
-#figure(
-  image("template/demo/figures/AvgByCondition/4conditions-AvgByCondition/fig2_condition.png", width: 90%),
-  caption: dynamic-caption(
-    [@BCNE condition separation for the two-condition design shown across 
-    all four recursive stages m1 to m4, illustrating how separation becomes 
-    more compact with each stage.],
-    [@BCNE recursive stage embeddings for the two-condition design.]
-  ),
-) <fig:fig_4condition>
-
-#figure(
-  image("template/demo/figures/AvgByCondition/4conditions-AvgByCondition/fig3_time_car.png", width: 90%),
-  caption: dynamic-caption(
-    [Points are coloured by time from stimulus onset (0 to 590 ms). @T-PHATE and @BCNE preserve smooth temporal trajectories with temporal order maintained as a continuous path.],
-    [Conditional variable and predictor in four-condition design.]
-  ),
-) <fig:fig3_time_animal_4cond>
-
-The four-condition design evaluated whether the two-condition finding scales to a more complex categorical structure. As shown in @fig:fig_4condition, 
-@T-PHATE and @BCNE maintained distinct condition trajectories while preserving temporal organization across all four conditions (@fig:fig3_time_animal_4cond). 
-
-Hence, increasing the number of conditions did not substantially reduce separation quality.
 
 
  #include "appendix.typ"
@@ -162,12 +131,17 @@ Hence, increasing the number of conditions did not substantially reduce separati
     short: "GW",
     long: "Gromov-Wasserstein",
   ),
+  (
+    key: "fMRI",
+    short: "fMRI",
+    long: "Functional magnetic resonance imaging",
+  ),
 )
 
 #show: thesis.with(
   author: "Priyanka Sanjeevkumar Ahuja",
   title: "Evaluating Temporal Dimensionality Reduction Methods for ERP-Structured EEG Data",
-  degree: "Masters",
+  degree: "Master's",
   faculty: "Faculty of Electrical Engineering and Computer Science
 Computational Cognitive Science",
   department: "",
@@ -233,9 +207,9 @@ The brain generates electrical signals that can be recorded at the scalp using @
 
 @ERP data has several dimensions: channels, time, conditions, and subjects. As experimental designs become more complex, with multiple conditions, continuous stimulus parameters, and overlapping neural responses, visualizing and interpreting this structure becomes increasingly challenging @mikheev2023art. Dimensionality reduction addresses this problem by compressing the high-dimensional structure into a low, interpretable representation.
 
-Standard dimensionality reduction approaches, such as @PCA and @tSNE, share a common limitation when applied to @ERP data. They treat each time point as an independent observation, without explicitly modeling the relationship between adjacent time points @polivcar. This assumption ignores the most important property of @ERP data, temporal continuity. Such methods embed time points solely based on amplitude similarity, producing fragmented structures in which the chronological flow of brain states is often lost.
+Standard dimensionality reduction approaches, such as @PCA and @tSNE, share a common limitation when applied to @ERP data. They treat each time point as an independent observation, without explicitly modeling the relationship between adjacent time points. This assumption ignores the most important property of @ERP data, temporal continuity. Such methods embed time points solely based on amplitude similarity, producing fragmented structures in which the chronological flow of brain states is often lost @polivcar.
 
-Neural activity follows a trajectory in the neural state space, with the structure geometry representing the stages of neural activity @cunningham2014dimensionality. Nonlinear dimensionality reduction methods like @tSNE, @UMAP, and @PHATE typically assume simple underlying manifolds and may not be able to represent complex topologies @chung2021neural. Because these approaches do not encode temporal order, they cannot accurately reconstruct the sequential structure of @ERP data.
+Neural activity follows a trajectory in the neural state space, with the trajectory geometry representing the stages of neural activity @cunningham2014dimensionality. Nonlinear dimensionality reduction methods like @tSNE, @UMAP, and @PHATE typically assume simple underlying data structures and may not capture complex topologies @chung2021neural. Because these approaches do not encode temporal order, they cannot accurately reconstruct the sequential structure of @ERP data.
 
 Time-aware dimensionality reduction methods address this by incorporating temporal structure directly into the embedding. @T-PHATE and @BCNE methods are two examples that produce temporally ordered embeddings on continuous neural recordings.
 
@@ -247,9 +221,11 @@ Dimensionality reduction can support exploratory analysis of multidimensional da
 
 == Research Gap
 
-Time-aware methods such as @T-PHATE and @BCNE have been demonstrated on continuous neural recordings, including fMRI BOLD signals, rat hippocampal spike trains, and macaque motor cortex activity. However, neither method has been applied to @ERP structured @EEG data, which presents a fundamentally different analytical challenge.
+Time-aware methods such as @T-PHATE and @BCNE have been demonstrated on continuous neural recordings, including fMRI BOLD signals, rat hippocampal spike trains, and macaque motor cortex activity @refBCNE  @refTPHATE. However, neither method has been applied to @ERP structured @EEG data, which presents a fundamentally different data structure and analytical challenge.
 
-@ERP are short, stimulus-locked epochs that are repeated across many trials rather than long continuous time series. Conventional analysis averages across trials within a condition to suppress noise, but this discards the trial-level variability that may carry meaningful information. Adapting these methods to @ERP data, therefore, requires careful handling of the epoch structure and a way to recover information that is otherwise lost in averaging.
+@ERP are short, stimulus-locked epochs that are repeated across many trials rather than long continuous time series like @fMRI data. Conventional analysis averages across trials within a condition to suppress noise, but this discards the trial-level variability that may carry meaningful information. Adapting these methods to @ERP data, requires adapting the pipeline to the epoch structure and developing 
+a strategy to recover trial-level information that is otherwise lost 
+in averaging.
 
 
 == Research questions
@@ -277,7 +253,7 @@ However, @PCA has important limitations for the visualization of @ERP trajectori
 
 === T-distributed Stochastic Neighbor Embedding
 
-@tSNE is a non-linear dimensionality reduction method that preserves local neighborhood structure. It models pairwise similarities between data points in the high-dimensional space using a Gaussian kernel. It constructs a low-dimensional embedding that preserves these neighborhood relationships by minimizing the Kullback-Leibler divergence between the high-dimensional and low-dimensional similarity distributions @anuragi2024mitigating.
+@tSNE is a non-linear dimensionality reduction method that preserves local neighborhood structure. It models pairwise similarities between data points in the high-dimensional space using a Gaussian kernel. It constructs a low-dimensional embedding that preserves these neighborhood relationships by minimizing the Kullback-Leibler divergence between the high-dimensional and low-dimensional similarity distributions @anuragi2024mitigating @van2008visualizing.
 
 @tSNE has two basic limitations for the @ERP trajectory visualization. First, it optimizes for local neighborhood structure and then tends to reveal global structure to some extent, meaning that nearby clusters in the embedding do not necessarily reflect true distances between neural response patterns @barnes. Second, @tSNE treats each time point as an independent observation, unaware of its sequential order. Time points with similar amplitudes are grouped together regardless of when they occur, so that the sequential flow of brain states is not recoverable from the embedding. Although this local clustering can incidentally separate experimental conditions, it does so without any temporal meaning, reflecting amplitude similarity rather than the progression of neural activity over time @van2008visualizing.
 
@@ -295,7 +271,7 @@ Unlike @tSNE, @UMAP provides a transform method that allows new data points to b
 === Potential of Heat-diffusion for Affinity-based Trajectory Embedding
 
 
-@PHATE is a diffusion geometry-based dimensionality reduction method designed to preserve continuous trajectories and branching structure within high-dimensional biological data @refPHATE. It constructs a Markov diffusion operator from local similarities between data points, computes information-geometric potential distances from resulting transition probabilities and embeds these distances into a low-dimensional space. @PHATE has been shown to outperform @tSNE on datasets with branching trajectories, while preserving both local and global structure, as measured by the @DeMAP.
+@PHATE is a diffusion geometry-based dimensionality reduction method designed to preserve continuous trajectories and branching structure within high-dimensional biological data. It constructs a Markov diffusion operator from local similarities between data points, computes information-geometric potential distances from resulting transition probabilities and embeds these distances into a low-dimensional space. @PHATE has been shown to outperform @tSNE on datasets with branching trajectories, while preserving both local and global structure, as measured by the @DeMAP @refPHATE.
 
 
 == Time-Aware Dimensionality Reduction Methods
@@ -305,41 +281,36 @@ Unlike @tSNE, @UMAP provides a transform method that allows new data points to b
 @T-PHATE extends @PHATE by adding an explicit temporal view
 derived from the autocorrelation structure of the signal.
 It is based on a dual-view diffusion method, with the @PHATE view based on brain activity patterns and the temporal view based on the autocorrelation structure of the data.
-The first view is the standard
-@PHATE diffusion operator, which captures the geometry of brain activity patterns.
+
+The first view is the standard @PHATE diffusion operator, which captures the geometry of brain activity patterns.
 The second view is a temporal diffusion operator constructed from the
-autocorrelation matrix, which encodes the temporal continuity of the signal. The
-two views are combined using a multi-view diffusion framework that integrates
-information from both the activity patterns and the temporal structure.
+autocorrelation matrix, which encodes the temporal continuity of the signal. The two views are combined using a multi-view diffusion framework that integrates information from both the activity patterns and the temporal structure.
 
 The result is an embedding that preserves both the similarity
-structure of brain states and their sequential ordering. @T-PHATE was originally
-demonstrated on the Sherlock fMRI dataset.
-The authors concluded that @T-PHATE recovered temporally ordered brain-state trajectories from continuous neural recordings @refTPHATE.
+structure of brain states and their sequential ordering. @T-PHATE was originally demonstrated on the three fMRI datasets @refTPHATE.
+The authors concluded that @T-PHATE recovered temporally ordered brain-state trajectories from continuous neural recordings.
 
 
 
 === Brain-dynamic Convolutional-Network-based Embedding
 
 
-The BCNE method uses a convolutional neural network to analyze time-series patterns of neural activity @refBCNE. It is an unsupervised learning approach where each time point is treated independently as an image for recursive @CNN training. Data undergoes temporal autocorrelation and spatial projection before being fed to the @CNN model.
+The @BCNE method uses a convolutional neural network to analyze time-series patterns of neural activity. It is an unsupervised learning approach where temporal dependencies and spatial inter-channel relationships are modeled before being fed to the @CNN. Data undergoes temporal autocorrelation smoothing and spatial projection before network training @refBCNE. 
 
-#[CNN]s have been widely applied to EEG data for feature extraction and classification, with convolutional layers to effectively capture spatial and temporal patterns in neural signals @li2020deep.
-The dynamic data are first processed through temporal autocorrelation smoothing, which amplifies the @ERP signal and lowers noise by averaging each time point with its temporal neighbors.
+#[CNN]s have been widely applied to EEG data for feature extraction and classification, with convolutional layers effectively capturing spatial and temporal patterns in neural signals @li2020deep. The dynamic data are first processed through temporal autocorrelation smoothing, which suppresses high-frequency noise and emphasizes salient temporal dependencies by computing a lag-weighted average of each time point with its correlated temporal neighbors. 
 
-Second, spatial mapping generates a structured two-dimensional representation from the multi-channel signal at each time point. The temporally processed signals are used to estimate the inter-channel interaction matrix, which is then aligned onto a grid using the Gromov-Wasserstein optimal transport. To encode their relationships in the image's spatial context, channels with similar activity are close together in the grid @islam2023cartography.
+Second, spatial mapping converts the multi-channel signal at each time point into a structured two-dimensional image. The direct interactions between channels are estimated and then aligned onto a pixel grid using @GW optimal transport @islam2023cartography, such that channels that strongly interact are placed close together as neighboring pixels, encoding their relationships within the image's spatial context.
 
-Third, the image sequence is processed by a convolutional neural network trained without any labels to minimize the KL divergence between pairwise similarity distributions in the high-dimensional image space and the two-dimensional embedding space. To further improve the resultant trajectory of the brain dynamic data, the initial HD probability matrices used for network optimization are replaced by feature vectors extracted from the first dense layer of BCNE.  As iterations increase, this approach uses feature vectors from deeper, dense layers of BCNE to generate progressively refined temporal trajectory representations of dynamic brain data in two-dimensional or 3-dimensional space.
 
-@BCNE was demonstrated on fMRI Sherlock movie, rat hippocampal, and macaque motor cortex datasets, achieving the highest classification accuracy and representational similarity scores among all compared methods @refBCNE. A key property distinguishing @BCNE from @T-PHATE and all other methods evaluated here is that the trained network defines a fixed coordinate system to which new data can be projected without retraining, enabling single-trial analysis and generalization to unseen conditions.
+Third, the image sequence is processed by a convolutional neural network trained without any labels to minimize the KL divergence between pairwise similarity distributions in the high-dimensional image space and the two-dimensional embedding space. To further refine the resulting trajectory, the model undergoes recursive optimization in which the original high-dimensional input is progressively replaced by feature vectors extracted from deeper dense layers, yielding refined temporal trajectory representations in two- or three-dimensional space. @BCNE was demonstrated on @fMRI Sherlock movie, rat hippocampal, and macaque motor cortex datasets, achieving the highest classification accuracy and representational similarity scores among the compared methods @refBCNE. 
 
 === Consistent Embeddings through Contrastive Learning (CEBRA)
 
-@CEBRA is a dimensionality reduction approach that combines supervised (hypothesis-driven) and self-supervised (discovery-driven) analysis, as well as the visualization and decoding of brain data. It defines “positive” (similar) and “negative” (dissimilar) sample pairings based on time or behavioral labels, and then trains a deep neural network with a contrastive loss function @cebra. The network learns a low-dimensional embedding by minimizing this loss, which pulls positive pairs closer together and pushes negative pairs apart.
+@CEBRA is a dimensionality reduction method that jointly leverages auxiliary variables and time to learn interpretable low-dimensional embeddings of neural data @cebra. It operates by defining positive and negative sample pairs based on time or user-defined labels, then training a neural network encoder with a contrastive loss that pulls similar pairs together and pushes dissimilar pairs apart. It can be applied in a supervised, hypothesis-driven mode or in a self-supervised, discovery-driven mode using time as the only label.
 
-@CEBRA was demonstrated on rat hippocampal, primate motor cortex, and mouse visual cortex recordings. The authors report that it produces consistent, stable embeddings that are reproducible across repeated runs. These embeddings support high-accuracy decoding of behavior.
+@CEBRA was validated on rat hippocampal, primate somatosensory cortex, and mouse visual cortex recordings, producing consistent and reproducible embeddings across repeated runs and subjects, and supporting high-accuracy decoding of behavior @cebra.
 
-@CEBRA was not included in the present evaluation but is described here as a closely related contrastive approach to time-aware embedding.
+While @CEBRA is well-suited for hypothesis-driven analysis, its embedding quality depends on the availability and relevance of the chosen labels. @BCNE, by contrast, is fully unsupervised and requires no external labels, recovering structure from the neural data alone through temporospatial correlation modeling. This makes @BCNE applicable in settings where such labels are unavailable or undefined. As the present study focused on unsupervised exploration of neural dynamics, @CEBRA was not applied.
 
 
 #pagebreak()
@@ -347,9 +318,9 @@ Third, the image sequence is processed by a convolutional neural network trained
 
 == UnfoldSim
 
-The #[EEG]-structured @ERP dataset was generated using UnfoldSim @refunfoldsim, a Julia package for simulation of realistic EEG signals.
-The simulated data consisted of four ERP components (P100, N170, P300, and N400), simulated using predefined basis functions. Both categorical and continuous (stimulus intensity) effects were generated for data variability across 32 and 64 channels @Harmening_2022.
-The resulting data was epoched into trials and transformed into a long-format representation, where each row corresponds to a time point with associated trial, condition and continuous labels.
+The ERP dataset was generated using #emph[UnfoldSim] @refunfoldsim, a Julia package for simulation of realistic EEG signals. The simulated data consists of four @ERP components (P100, N170, P300, and N400), each represented by a characteristic waveform, with both categorical and continuous effects included to introduce variation across conditions and trials.
+
+Data were simulated for both 32-channel and 64-channel configurations @Harmening_2022 using #emph[biosemi_32] and #emph[biosemi_64]. The resulting data were epoched into trials and transformed into a long-format representation, where each row corresponds to a time point with associated trial, condition, and continuous labels.
 
 
 #figure(
@@ -358,7 +329,7 @@ The resulting data was epoched into trials and transformed into a long-format re
     inset: 7pt,
     align: (left, left),
     [*Parameter*], [*Value*],
-    [Number of channels], [32 (selected from BioSemi 32 montage)],
+    [Number of channels], [32 / 64],
     
     [Number of trials], [2000],
     [Categorical conditions], [2 (car, face)],
@@ -384,7 +355,7 @@ The resulting data was epoched into trials and transformed into a long-format re
   caption: "Simulated ERP components, their latencies, the experimental factors affecting them, and their assigned cortical sources."
 ) <tbl:erp_components>
 
-== Simulated ERP Components Example 
+== Simulated ERP Components  
 #show: codly-init.with()
 #figure(
 
@@ -398,7 +369,7 @@ design = SingleSubjectDesign(
 ) |> x -> RepeatDesign(x, 100)
 
 ```,
-caption: "Julia code defining the experimental design."
+caption: "Julia code defining the experimental design for two-condition design."
 
 )<lst:SimulatedCodeDesign>
 
@@ -410,7 +381,7 @@ n1 = (n170(; sfreq=sfreq), @formula(0 ~ 1 + condition),[5.0, 3.0],  Dict(), 0)
 p3 = (p300(; sfreq=sfreq), @formula(0 ~ 1 + continuous),  [5.0, 1.0],  Dict(), 0)
 n4 = (n400(; sfreq=sfreq), @formula(0 ~ 1 + condition),   [5.0, 5.0],  Dict(), 0)
 ```,
-caption: "Julia code defining ERP components"
+caption: "Julia code defining ERP components for two-conditions design."
 
 )<lst:SimulatedERPComponents>
 
@@ -423,7 +394,7 @@ caption: "Julia code defining ERP components"
   ),
 ) <fig:butterfly_conditions>
 
-The simulated data was visualized as topoplot series using UnfoldMakie.jl @mikheev2025unfoldmakie.
+The simulated data was visualized as @ERP plot and topoplot series using #emph[UnfoldMakie.jl] @mikheev2025unfoldmakie.
 
 
 #figure(
@@ -435,7 +406,7 @@ The simulated data was visualized as topoplot series using UnfoldMakie.jl @mikhe
 ) <fig:topoplot>
 
 
-@tbl:datasets presents the three datasets used in the evaluation, each containing different numbers of categorical conditions and continuous variables.
+@tbl:datasets presents the four datasets used in the evaluation, each containing different numbers of categorical conditions and continuous variables.
 
 #figure(
   table(
@@ -445,42 +416,43 @@ The simulated data was visualized as topoplot series using UnfoldMakie.jl @mikhe
     [*Dataset*], [*Channels*], [*Trials*], [*Conditions*], [*Continuous levels*], [*Noise level*],
     [1],  [32], [2000], [2],  [10 ], [1],
     [2],  [64], [1200], [4], [6 ],  [1],
-    [3],  [64], [1200], [4 ],   [6 ],  [7],
+    [3],  [64], [1200], [4 ],   [6 ], [4],
     [4],  [32], [2000], [10 ], [2], [2],
   ),
-  caption: "Dataset configurations used across the three simulated designs. All datasets share the same time window (0–595 ms)."
+  caption: "Dataset configurations used across the four simulated designs. All datasets share the same time window (0–595 ms)."
 ) <tbl:datasets>
 
 = Implementation 
 
 == Average by condition
 
-The average-by-condition approach adapts the original @BCNE pipeline proposed in @refBCNE while tailoring it to an @ERP -structured @EEG dataset.
+The average-by-condition approach adapts the original @BCNE pipeline @refBCNE for an #[ERP]-structured @EEG dataset.
+
 
 The pipeline was implemented in four stages:
 
-1. Grouping: The data was grouped by condition and continuous levels. Within each group, trials are averaged across the trial dimension to produce one clean @ERP per group, resulting in one averaged signal per condition-level combination.
+1. Grouping: The data was grouped by condition and continuous levels. Within each group, trials were averaged across the trial dimension to produce one clean @ERP per group.
 
-2. Temporal smoothing: To reduce high-frequency noise while preserving temporal structure, the temporal autocorrelation of each EEG channel was computed to denoise the data. This smoothing reduces trial-level noise while preserving the underlying ERP waveform shape.
+2. Temporal smoothing: To reduce high-frequency noise while preserving temporal structure, the temporal autocorrelation of each EEG channel was computed to construct a reweighting matrix, which smooths each time point by averaging it with correlated temporal neighbours.
 
-3. Spatial mapping: At each time point of averaged @ERP signals, the 32-channel vector is converted into a 6 x 6 grid, with channels with similar activity patterns arranged closer together, using Gromov-Wasserstein optimal transport @islam2023cartography. The generated grid image sequences, known as neuromaps, are input for the @CNN model.
+3. Spatial mapping: The multi-channel @ERP signals are mapped onto a 2D square grid where channels with similar brain activity are placed next to each other. This arrangement was computed using Gromov-Wasserstein optimal transport @islam2023cartography, which learned the best way to assign channels to grid positions based on their activity similarity. The same grid arrangement was then applied across all time points, producing a sequence of grid images called neuromaps, which were used as input to the CNN model.
 
 
 #figure(
   image("template/demo/figures/neuromaps_erp_peaks_32ch.png", width: 70%),
   caption: dynamic-caption(
-    [Neuromaps illustrating how channel-correlation patterns evolve across @ERP peak latencies for 32 channels represented by 6 x 6 grid. Red and blue regions reflect changes in channel activity over time; ERP components therefore correspond to distinct channel activations.],
-    [Neuromaps at @ERP peak latencies.],
+    [Neuromaps illustrating how channel-correlation patterns evolve across @ERP peak latencies for 32 channels represented by 6 x 6 grid images. Red and blue regions reflect changes in channel activity over time; ERP components therefore correspond to distinct channel activations.],
+    [Neuromaps at @ERP peak latencies.]
   ),
 ) <fig:neuromaps_erp_peaks_32ch>
 
 
-The neuromaps in @fig:neuromaps_erp_peaks_32ch show that distinct regions of the grid corresponded to different scalp topographies, consistent with the simulated activity patterns. Parietal and central channels were active during the N170 component, while frontal and central channels dominated during the P300 component.
+The neuromaps in @fig:neuromaps_erp_peaks_32ch and @fig:neuromaps_erp show that distinct regions of the grid corresponded to different scalp topographies, consistent with the simulated activity patterns. Parietal and central channels were active during the N170 component, while frontal and central channels dominated during the P300 component @KAPPENMAN2021117465.
 
 
 4. @CNN training: A convolutional neural network was trained in an unsupervised way over four recursive optimization stages (m1–m4) following the @BCNE recursive refinement strategy. The architecture comprised four convolutional layers (filters: 3, 16, 32, 64) followed by dense layers of 1024, 512, 256, and 8 units, with a final two-dimensional output.
   
-At the first recursive stage m1, the target similarity distribution was computed directly from the neuromap images. At each subsequent stage, the model was reloaded, and the similarity target was recomputed from progressively deeper dense layer features, allowing the embedding to incorporate increasingly global representations of the temporal structure @refBCNE. The two-dimensional outputs at each stage were saved separately to enable comparison of the manifold structure across multiple recursion stages.
+The model was trained over four recursive stages (m1 to m4). At stage m1, the network learned to compress the neuromap images into a 2D embedding. At each subsequent stage, the model was reloaded and retrained using features from a deeper layer as input, gradually capturing detailed structure in the data.
 
 #figure(
   table(
@@ -498,7 +470,7 @@ At the first recursive stage m1, the target similarity distribution was computed
     [Output], [two-dimensional embedding],
    
   ),
-caption: "BCNE training hyperparameters used in the average-by-condition approach for 32-channel @EEG dataset."
+caption: "BCNE training hyperparameters used in the average-by-condition approach for 32-channel EEG dataset."
 
 ) <tbl:hyperparameters_BCNE_condition>
 
@@ -506,20 +478,20 @@ caption: "BCNE training hyperparameters used in the average-by-condition approac
 
 == Trial-level projection 
 
-The BCNE model was trained in an unsupervised manner on the winsorized grand average, without using condition or continuous labels.
-Winsorization replaces extreme amplitude values with the boundary values at the chosen percentiles rather than removing them entirely,  to prevent extreme amplitude from distorting the average value @dixon1974trimming. 
-Condition labels were used only post-hoc to compute condition-averaged embeddings for visualization, and played no role in model optimization.
+The @BCNE model was trained in an unsupervised manner on the winsorized grand average, without using condition or continuous labels. Winsorization replaces extreme amplitude values with the boundary values at the chosen percentiles rather than removing them entirely,  to prevent extreme amplitude from distorting the average value @dixon1974trimming. 
+Condition labels were used only post-hoc training to compute condition-averaged embeddings for visualization, and played no role in model optimization.
 
-1. Grand-average @ERP computation: All trials are averaged to produce a single (channel, time) @ERP. This signal is the low-noise representation of the event-locked component structure for the simulated dataset.
-2. @BCNE training on the grand-average: Temporal smoothing, spatial mapping, and recursive CNN training proceed exactly as in the Average by Condition pipeline, but with a single input @ERP instead of condition-continuous groups. The trained @BCNE model defines a fixed coordinate system based on the grand average. 
+1. *Grand-average @ERP computation*: All trials were averaged to produce a single (channel, time) @ERP. This signal is the low-noise representation of the event-locked component structure for the simulated dataset.
+2. *@BCNE training on the grand-average*: Temporal smoothing, spatial mapping, and recursive CNN training proceed exactly as in the Average by Condition pipeline, but with a single input @ERP instead of condition-continuous groups. The trained @BCNE model defines a fixed coordinate system based on the grand average. 
 
-  All @ERP trials, regardless of condition, follow the same basic temporal sequence: P100 at 100 ms, N170 at 170 ms, P300 at 300 ms, and N400 at 400 ms @KAPPENMAN2021117465. This temporal structure is captured by the grand average, and @BCNE learns a low-dimensional coordinate system to represent it. Before the model trains on any data, the channel amplitudes are first temporally smoothed using an autocorrelation map, which weights each time point by how strongly it relates to nearby time points. The smoothed amplitudes are then remapped onto a two-dimensional grid using optimal transport (@refBCNE), which arranges channels so that channels with similar activity end up as neighbors on the grid. This grid is fixed once from the grand average.
+  All @ERP trials, regardless of condition, follow the same temporal sequence: P100 at 100 ms, N170 at 170 ms, P300 at 300 ms, and N400 at 400 ms @KAPPENMAN2021117465. This temporal structure is captured by the grand average, and @BCNE learns a low-dimensional coordinate system to represent it. Before the model trains on any data, the channel amplitudes are first temporally smoothed using an autocorrelation map, which weights each time point by how strongly it relates to nearby time points. The smoothed amplitudes are then remapped onto a two-dimensional grid using @GW optimal transport @refBCNE, which arranges channels so that channels with similar activity end up as neighbors on the grid. This grid is fixed once from the grand average.
     
   Every trial passes through this same fixed transformation. The model then learns a coordinate system where each time point gets a two-dimensional position based on the spatial pattern of channel amplitudes on this grid at that moment. When an individual trial is projected, its amplitude pattern on the grid at each time point determines its two-dimensional position.
 
-3.  Trial projection: Each trial is then passed through the trained @CNN model to generate its two-dimensional coordinates at each time point.
+3.  *Trial projection*: Each trial is projected through the fixed coordinate system with amplitude information, without any condition or continuous labels. Condition labels are used solely after training the model to group the projected coordinates for visualization and outlier assessment. The condition separation visible in the two-dimensional embeddings emerges solely from amplitude structure, as trials from different conditions land in different regions because their amplitude patterns differ at @ERP components. This unsupervised recovery of condition structure provides evidence that the embedding captures genuine ERP-relevant amplitude differences.
 
-The architecture comprised three convolutional layers (filters: 3, 16, 32) followed by dense layers (256, 128, 64, 8) with a final two-dimensional output.
+
+The @CNN architecture comprised three convolutional layers (filters: 3, 16, 32) followed by dense layers (256, 128, 64, 8) with a final two-dimensional output.
 
 #figure(
   table(
@@ -550,20 +522,20 @@ The architecture comprised three convolutional layers (filters: 3, 16, 32) follo
     [Output],
     [two-dimensional embedding],
   ),
-  caption: "BCNE training hyperparameters used in the trial-level projection approach for 32-channel @EEG dataset."
+  caption: "BCNE training hyperparameters used for 32-channel EEG dataset in the trial-level projection approach."
 ) <tbl:hyperparameters_BCNE>
 
 === Comparison with @PCA
-The projected trajectories were visualized against the reference grand-average trajectory and compared with a linear baseline (@PCA) trained on the same grand-average and used in the same projection mode. The directions of maximum variance were computed from the grand average, and then each trial was projected onto the two principal components with maximum variance @kayser2003optimizing. Principal components were learned from the grand average and applied as a fixed projection to each trial.
+The projected trajectories were visualized against the reference grand-average trajectory and compared with a linear baseline (@PCA) trained on the same grand-average data. For @PCA, the directions of maximum variance were computed from the grand average and each trial was projected onto the two principal components with maximum variance @kayser2003optimizing, providing a fixed linear reference for comparison.
 
-In this study, only @BCNE and @PCA as baseline comparisons were used for single-trial projection, as both define an explicit fixed mapping learned from the grand average that can be applied to new data. The out-of-sample projection capabilities of tSNE, UMAP, PHATE, and T-PHATE were not evaluated @anuragi2024mitigating.
+In this study, only @BCNE and @PCA as baseline comparisons were used for single-trial projection, as both define an explicit fixed mapping learned from the grand average that can be applied to new data. The projection capabilities of @UMAP, @PHATE, and @T-PHATE were not evaluated in this study.
 
 
 === Outlier Detection 
 
-The automated pipeline was implemented on top of the trial-level @BCNE projections to assess whether @BCNE projection method could differentiate between outlier trials. Before any trial was projected, the data were winsorized by clipping amplitude values to the 2nd–98th percentile range of the normal trial distribution. 
+The automated pipeline was implemented on top of the trial-level @BCNE projections to assess whether @BCNE projection method could differentiate between outlier trials.
 
-The grand average used for training was computed by first winsorizing all individual trials at the 2nd and 98th percentiles of the amplitude distribution, then averaging across trials. This replaces extreme amplitude values with boundary values rather than removing them, ensuring that amplitude spikes do not distort the reference coordinate system used to project individual trials.
+For training, the grand average was computed by first winsorizing all individual trials at the 2nd and 98th percentiles of the amplitude distribution, then averaging across trials. This replaces extreme amplitude values with boundary values rather than removing them, ensuring that amplitude spikes do not distort the reference coordinate system used to project individual trials.
 
 After projecting all individual trials without winsorization onto the fixed @BCNE coordinate system, each trial received an outlier score, calculated as the mean Euclidean distance between its two-dimensional trajectory and its condition's mean trajectory. Trials with scores exceeding three standard deviations above the mean were flagged as outliers, following a statistical approach based on a threshold frequently used to detect unusually deviant EEG epochs @delorme2001automatic. The outlier score reflects the overall geometric deviation of a trial from its expected temporal path in the embedding space.
 
@@ -571,18 +543,15 @@ After projecting all individual trials without winsorization onto the fixed @BCN
 
 
 == Rationale for two approaches
-The two approaches address different aspects of data. The average-by-condition approach evaluated whether time-aware methods appear to recover
-meaningful temporal and condition structure from clean @ERP signals, providing a
-direct comparison across six methods.
+The two approaches address different aspects of data. The average-by-condition approach evaluated whether time-aware methods could recover meaningful temporal and condition structure from clean @ERP signals, providing a direct comparison across six methods.
 
 The trial-level projection approach addressed a practical limitation of the
-condition-averaged strategy. By averaging across trials before embedding, trial-level variability is lost. Training @BCNE on the grand average and projecting individual trials through the fixed coordinate system preserved this
-variability while still recovering condition separation and enabling outlier detection that was not possible with condition averaging alone.
+condition-averaged strategy. By averaging across trials before embedding, trial-level variability is lost. Training @BCNE on the grand average and projecting individual trials through the fixed coordinate system preserved this variability while still recovering condition separation and enabling outlier detection that was not possible with condition averaging alone.
  
 = Results 
 
 
-To assess the interpretability of the proposed approach, simulated @ERP datasets were used for experimental designs of increasing complexity, spanning 2, 4, and 10 categorical conditions, combined with a continuous variable. This progressive design assessed how well the approach distinguishes different conditions in the embedding space as experimental complexity increased.
+To assess the interpretability of the proposed approaches, simulated @ERP datasets were used with experimental designs of increasing complexity  2, 4, and 10 categorical conditions, combined with a continuous variable. This progressive design assessed how well the approach distinguishes different conditions in the embedding space as experimental complexity increased.
 
 Across all four datasets, @T-PHATE and @BCNE consistently recovered temporally ordered trajectories with condition divergences at the correct @ERP latencies, while time-agnostic methods produced fragmented embeddings. The following sections document this pattern across increasing design complexity. 
 
@@ -600,12 +569,10 @@ Across all four datasets, @T-PHATE and @BCNE consistently recovered temporally o
 
 
 As shown in @fig:fig_condition_2cond, the car and face condition trajectories revealed a clear difference between time-aware and time-agnostic methods.
-In @T-PHATE, the two conditions followed a shared temporal progression through the early P100 window before diverging into two distinct loops at the N170 and N400 time points, consistent with the condition effects encoded in the simulation. The loop structure in @T-PHATE arises because of the diffusion operator that connects each time point to its temporal neighbours, causing the embedding to trace a continuous path through time. Shared @ERP components such as P100 appear as a single overlapping path, while condition-specific components cause the trajectories to diverge into separate loops. @T-PHATE trajectories diverge at exactly the simulated @ERP latencies, indicating that the embedding recovers genuine temporal structure, given that the method received only trial-averaged EEG as input with no condition labels.
+In @T-PHATE, the two conditions followed a shared temporal progression through the early P100 window before diverging into two distinct loops at the N170 and N400 time points, consistent with the condition effects encoded in the simulation. The loop structure in @T-PHATE arises because of the diffusion operator that connects each time point to its temporal neighbours, causing the embedding to trace a continuous path through time. The @ERP components, such as the P100, appear as a single overlapping path, while condition-specific components cause the trajectories to diverge into separate loops. @T-PHATE trajectories diverge at exactly the simulated @ERP latencies, indicating that the embedding recovers genuine temporal structure, given that the method received only trial-averaged EEG as input with no condition labels.
 
 
-@BCNE also produced condition-separated embeddings. The separation became more compact through each recursive stage, as each 
-stage recomputes the pairwise similarity target from progressively deeper 
-network features rather than the raw images, causing the model to focus 
+@BCNE produced condition-separated embeddings, with the separation becoming more compact through each recursive stage, as each stage recomputes the pairwise similarity target from progressively deeper network features rather than the raw images, causing the model to focus 
 on an increasingly global structure and pull the embedding tighter.
 
 === Temporal Structure Preservation
@@ -613,29 +580,19 @@ on an increasingly global structure and pull the embedding tighter.
 #figure(
   image("template/demo/figures/AvgByCondition/2conditions-AvgByCondition/fig_time_car_2cond.png", width: 100%),
   caption: dynamic-caption(
-    [Conditional variable and predictor for the car condition in the two-condition design. Points are coloured by time from stimulus onset (0 to 590 ms). @BCNE and @T-PHATE produce directed trajectories in which temporal order is preserved as a continuous path through the embedding space.],
-    [Conditional variable and predictor for the car condition.],
+    [Two-dimensional embeddings for the car condition in the two-condition design. Color encodes time since stimulus onset (0 to 590 ms). @BCNE and @T-PHATE preserve temporal order as a directed path, while time-agnostic methods produce unordered embeddings.],
+    [Conditional variable and predictor for the car condition]
   ),
 ) <fig:fig_time_car_2cond>
 
 
-As shown in @fig:fig_time_car_2cond, each point represents a single time point, with the 32-channel voltage vector reduced to a two-dimensional coordinate, colored by time from stimulus onset (0 to 590 ms). @T-PHATE and @BCNE both produced directed trajectories in which temporal 
-order was preserved as a continuous path from early to late time points. In 
-@BCNE, the trajectory became more compact across recursive stages, indicating the progressive refinement of feature embeddings.
-
-Time-agnostic methods produced fragmented or unordered embeddings without 
-meaningful condition separation, consistent with their inability to encode 
-temporal continuity. @PHATE and @T-PHATE share the same diffusion-geometry core, yet only 
-@T-PHATE produced ordered trajectories. @PHATE produced overlapping 
-structures across both conditions, confirming that the temporal 
-encoding added by @T-PHATE is the key factor driving trajectory 
-preservation, not the diffusion geometry alone.
+As shown in @fig:fig_time_car_2cond, each point represents a single time point in the @ERP epoch, with color encoding time since stimulus onset (0 to 590 ms). @T-PHATE and @BCNE both produced directed trajectories in which temporal order was preserved as a continuous path from early to late time points. In @BCNE, the trajectory became more compact across recursive stages, indicating the progressive refinement of feature embeddings. Time-agnostic methods produced fragmented or unordered embeddings, consistent with their inability to encode temporal continuity. @PHATE and @T-PHATE share the same diffusion-geometry core, yet only @T-PHATE produced ordered trajectories, confirming that temporal encoding is the key factor driving trajectory preservation, not the diffusion geometry alone.
 
 
 #figure(
   image("template/demo/figures/AvgByCondition/2conditions-AvgByCondition/fig_continuous_all_2cond.png", width: 100%),
   caption: dynamic-caption(
-    [Two-dimensional embeddings for the six continuous levels ranging from −5.0 to +5.0. @T-PHATE and @BCNE trajectories fan out at the P300 time point (~300 ms), forming a smooth gradient ordered by continuous value. The gradient is absent at P100, N170, and N400, reflecting the simulation design in which only P300 amplitude depends on the continuous variable.],
+    [Two-dimensional embeddings for the six continuous levels ranging from −5.0 to +5.0. At the P300 latency (~300 ms), trajectories from @T-PHATE and @BCNE fan into distinct, smoothly ordered paths corresponding to each continuous level. The gradient is absent at P100, N170, and N400, reflecting the simulation design in which only P300 amplitude depends on the continuous variable.],
     [Continuous-level embeddings for the two-condition design.]
   ),
 ) <fig:fig_continuous_all_2cond>
@@ -647,12 +604,33 @@ fanned out around P300 latency with continuous levels separating into
 distinguishable trajectories, whereas other methods produced no visible gradient.
 
 
+#figure(
+  image("template/demo/figures/AvgByCondition/4conditions-AvgByCondition/fig2_condition.png", width: 90%),
+  caption: dynamic-caption(
+    [Two-dimensional embeddings for the four-condition design, illustrating condition separation across all six methods.],
+    [Condition separation across all six methods, four-condition design.]
+  ),
+) <fig:fig_4condition>
+
+#figure(
+  image("template/demo/figures/AvgByCondition/4conditions-AvgByCondition/fig3_time_car.png", width: 90%),
+  caption: dynamic-caption(
+    [Points are coloured by time from stimulus onset (0 to 590 ms). @T-PHATE and @BCNE preserve smooth temporal trajectories with temporal order maintained as a continuous path.],
+    [Conditional variable and predictor in four-condition design.]
+  ),
+) <fig:fig3_time_animal_4cond>
+
+The four-condition design evaluated whether the two-condition finding scales to a more complex categorical structure. As shown in @fig:fig_4condition, 
+@T-PHATE and @BCNE maintained distinct condition trajectories while preserving temporal organization across all four conditions (@fig:fig3_time_animal_4cond). 
+
+Hence, increasing the number of conditions did not substantially reduce separation quality.
+
 
 
 === Quantitative Analysis
 
 The following standard quantitative metrics were computed:
-1. *@KNN* accuracy measures local condition separability
+1. *@KNN* accuracy measures local condition separability.
 2. *Trustworthiness and continuity* measure how faithfully local and global neighborhood structure is preserved between the high-dimensional and two-dimensional space @refBCNE. 
 
 
@@ -666,22 +644,19 @@ The following standard quantitative metrics were computed:
 
 
 @fig0_metrics_table-4cond indicated that standard dimensionality 
-reduction metrics measure neighborhood preservation, but are not 
-sensitive to temporal-order preservation, exposing a limitation 
-in quantitatively evaluating temporal dimensionality reduction. The recovery of temporal structure is instead evident qualitatively, in the ordered progression of the embedding trajectories from early to late time points across the epoch.
+reduction metrics measure neighborhood preservation, but are not sensitive to temporal-order preservation, exposing a limitation in quantitatively evaluating temporal dimensionality reduction. The recovery of temporal structure is instead evident qualitatively, in the ordered progression of the embedding trajectories from early to late time points across the epoch.
 
 === Robustness to Noise
 
-Dataset 3 used a higher noise level (7)
-allowing assessment of how increased noise affects the embedding quality across recursive stages.
+Dataset 3 as listed in @tbl:datasets used a higher noise level, allowing assessment of how increased noise affects the embedding quality across recursive stages.
 
 #figure(
   image("template/demo/figures/AvgByCondition/4conditions-noise7/4conditions_noise7_64ch_recursive.png", width: 70%),
    caption: dynamic-caption(
-    [@BCNE condition separation for the four-condition design at noise level 7 shown across 
+    [@BCNE condition separation for the four-condition design at noise level 4 shown across 
     all four recursive stages, m1 to m4. Condition separation remains visible 
     across stages despite increased noise.],
-    [@BCNE condition separation under high noise, noise level 7.]
+    [@BCNE condition separation under high noise, noise level 4.]
   ),
 ) <fig:bcne_noise_4cond>
 
@@ -689,7 +664,7 @@ As shown in @fig:bcne_noise_4cond, @BCNE maintained condition-separated
 embeddings under the higher noise level across all four recursive stages. 
 The four conditions remained distinguishable in the embedding space, 
 though with greater overlap compared to the lower-noise design 
-in the Appendix. The recursive refinement from m1 to m4 continued to 
+in @fig:bcne_condition_recursive_2cond. The recursive refinement from m1 to m4 continued to 
 improve separation progressively, suggesting the model learns increasingly 
 discriminative features at each stage.
 
@@ -701,10 +676,10 @@ discriminative features at each stage.
   caption: dynamic-caption(
     [Condition separation embeddings produced by all six methods for the 
     four-condition design (animal, car, face, house) under high noise 
-    conditions (noise level 7). @T-PHATE and @BCNE maintain visible 
+    conditions (noise level 4). @T-PHATE and @BCNE maintain visible 
     condition separation despite increased noise, while time-agnostic 
     methods show further fragmentation.],
-    [Condition separation for the four-condition design, noise level 7.]
+    [Condition separation for the four-condition design, noise level 4.]
   ),
 )<fig:fig_condition_4cond_noise7>
 
@@ -712,7 +687,7 @@ discriminative features at each stage.
 #figure(
   image("template/demo/figures/AvgByCondition/4conditions-noise7/metrics_table_4cond_noise7.png", width: 100%),
   caption: dynamic-caption(
-    [Quantitative comparison of all six methods under higher noise conditions (noise level 7). 
+    [Quantitative comparison of all six methods under higher noise conditions (noise level 4). 
     @BCNE m4 achieved the highest @KNN accuracy (0.599), outperforming all other methods. 
     Trustworthiness and continuity remained high across all methods, consistent with the 
     lower-noise results.],
@@ -724,14 +699,13 @@ discriminative features at each stage.
 As shown in @fig:metrics_noise_4cond_noise7 and @fig:fig_condition_4cond_noise7, @BCNE recursive stage m4 achieved the highest 
 @KNN accuracy of 0.599 under the higher noise level, outperforming all 
 other methods, including @T-PHATE (0.48). Compared to the lower-noise results in @fig0_metrics_table-4cond, @KNN accuracy decreased across all methods under higher noise, while 
-trustworthiness and continuity remained consistently high, indicating 
-that these standard metrics are not able to distinguish between the conditions in high-noise data.
+trustworthiness and continuity remained consistently high, indicating that these standard metrics were not able to distinguish between the conditions in high-noise data.
 
 
 #pagebreak()
 
 
-== Trial level analysis
+== Trial-level analysis
 
 After training on the grand average, each condition's mean trajectories were projected onto the fixed coordinate system to verify that the embedding captured condition-relevant structure before proceeding to single-trial analysis. 
 
@@ -739,13 +713,18 @@ As shown in @fig:bcne_condition_2cond, the car and face condition mean trajector
 #figure(
   image("template/demo/figures/Projection/Projection-2conditions/bcne_condition.png", width: 100%),
   caption: dynamic-caption(
-    [@BCNE trial-level projection for the two-condition design. Condition mean trajectories for car and face diverge at the @ERP components where condition effects were simulated, following a shared path through the P100 window where no condition effect was present.],
-    [@BCNE trial-level projection for the two-condition design.],
+    [@BCNE trial-level projection for the two-condition design with low noise (noise level 1). Conditional mean trajectories for car and face diverge at the @ERP components where condition effects were simulated, following a shared path through the P100 window where no condition effect was present.],
+    [@BCNE trial-level projection for the two-condition design.]
   ),
 ) <fig:bcne_condition_2cond>
 
-Car and face trials share identical amplitude distributions at 100 ms and therefore occupy the same region in two-dimensional space. At N170, a condition effect of 3.0 was added on top of the baseline response of 5.0 for the face condition, producing stronger amplitudes across the electrode grid and therefore different two-dimensional positions in the embedding. The condition structure was recovered from the learned coordinate system. The model was trained only on the winsorized grand average. The condition separation emerged from amplitude differences 
-already present in the data, without condition labels being provided to the model during training.
+
+Car and face trials share identical amplitude distributions at 100 ms and 
+therefore occupy the same region in two-dimensional space. At N170, a condition effect of 3.0 was added on top of the baseline 
+response of 5.0 for the face condition (as defined in @lst:SimulatedERPComponents), producing stronger amplitudes across the electrode grid and therefore 
+different two-dimensional positions in the embedding. The condition separation emerged from amplitude differences already present in the data, without any condition labels used in the model training.
+
+
 
 #figure(
   image("template/demo/figures/Projection/Projection-2conditions/bcne_continuous.png", width: 85%),
@@ -765,7 +744,7 @@ As shown in @fig:bcne_continuous_2cond, the continuous-level embeddings produced
   ),
 ) <fig:bcne_trial_conditions_2cond>
 
-As shown in @fig:bcne_trial_conditions_2cond, individual trials confirmed that temporal structure was preserved at the trial level. Car trials formed a compact cloud around the car mean trajectory, while face trials showed a wider spread, particularly at N170, consistent with the larger amplitude variability of the face condition. The condition mean trajectories remained distinguishable within the trial clouds.
+As shown in @fig:bcne_trial_conditions_2cond, individual trials confirmed that temporal structure was preserved at the trial level. Car trials clustered around the car mean trajectory, while face trials showed a wider spread, particularly at N170, consistent with the larger amplitude variability of the face condition. The condition mean trajectories remained distinguishable within the trial clouds.
 
 #figure(
   image("template/demo/figures/Projection/Projection-2conditions/bcne_trial_continuous.png", width: 100%),
@@ -777,7 +756,7 @@ separation visible at other @ERP component latencies.],
   ),
 ) <fig:bcne_trial_continuous_2cond>
 
-As shown in @fig:bcne_trial_continuous_2cond, the single-trial continuous projection confirmed that the fanning at P300 observed in the condition-averaged embeddings was also present at the trial level. Continuous levels separated smoothly from −5.0 to +5.0 at P300, with the distance from the reference level peaking at 300 ms and returning to baseline at all other latencies.
+As shown in @fig:bcne_trial_continuous_2cond, individual trials were projected through the fixed coordinate system and embedded with their continuous labels for visualization after training. The fanning pattern at P300 was observed in the condition-averaged embeddings ordered from −5.0 to +5.0. The separation peaked at 300 ms and reduced substantially at other latencies, indicating that the embedding captures continuous label-related amplitude differences at the single-trial level.
 
 #figure(
   image("template/demo/figures/Projection/Projection-4conditions/bcne_trial_conditions_4cond.png", width: 100%),
@@ -796,6 +775,8 @@ As shown in @fig:bcne_trial_continuous_2cond, the single-trial continuous projec
 ) <fig:bcne_trial_conditions_10conditions>
 
 
+
+
 #figure(
   image("template/demo/figures/Projection/Projection-10conditions/bcne_trial_continuous_10conditions.png", width: 110%),
   caption: dynamic-caption(
@@ -810,23 +791,43 @@ levels separating in smooth, orderly steps consistent with the simulation.
 
 
 #figure(
-  image("template/demo/figures/pca/pca_conditions.png", width: 90%),
+  image("template/demo/figures/pca/pca_conditions.png", width: 100%),
   caption: dynamic-caption(
-    [@PCA trial-level projection for the four-condition design (animal, car, face, house). Condition mean trajectories appear separated at the correct @ERP latencies, reflecting the maximum variance of the grand average rather than explicit temporal modelling.],
+    [@PCA trial-level projection for the four-condition design. Condition mean trajectories appear separated at the @ERP components, reflecting the maximum variance of the grand average.],
     [@PCA trial-level projection for the four-condition design.]
   ),
 ) <fig:pca_conditions>
 
 
 #figure(
-  image("template/demo/figures/pca/pca_continuous.png", width: 90%),
+  image("template/demo/figures/pca/pca_continuous.png", width: 100%),
   caption: dynamic-caption(
-    [@PCA continuous trial trajectories for the four-condition design, showing trajectory fanning at P300. Compared to @BCNE, the trajectories are more angular and the trial cloud more dispersed.],
+    [@PCA continuous trial trajectories for the four-condition design, showing trajectory fanning at P300.],
     [@PCA continuous trial trajectories for the four-condition design.]
   ),
 ) <fig:pca_continuous>
 
-As a linear baseline, @PCA was trained on the same grand average and projected in the same way as @BCNE, as shown in @fig:pca_conditions and @fig:pca_continuous. The condition trajectories appeared visually separated at the correct latencies, but this should not be interpreted as temporal structure preservation by @PCA. As a variance-driven method, @PCA does not explicitly model temporal order. The apparent separation arose because the grand average already contained temporal and condition-related structure, which @PCA projected onto its principal components. Compared to @BCNE, the @PCA trajectories were more angular and the trial cloud more dispersed, suggesting that @BCNE produced a more compact and temporally consistent embedding.
+As a linear baseline, @PCA was trained on the same grand average and projected in the same way as @BCNE, as shown in @fig:pca_conditions and @fig:pca_continuous. The condition trajectories appeared visually separated at the correct latencies. However, this separation is not a result of temporal structure preservation by @PCA. @PCA identifies directions of maximum variance in the grand average, and since the grand average already contains temporally ordered @ERP structure, the principal components tend to align with that structure. The method itself has no mechanism for encoding temporal order. Compared to @BCNE, the @PCA trajectories were more angular and less smooth, reflecting the linear nature of the projection.
+
+
+=== Robustness to Noise
+
+At low noise, @BCNE individual trial trajectories formed compact clouds around the condition mean, with condition separation clearly visible in the embedding space. 
+
+At higher noise levels (noise level 4), individual trial trajectory visualization becomes uninformative as noise dominates signals. This occurs because each individual trial has a lower signal-to-noise ratio than the grand average, causing its projected position to be determined more by noise than by the underlying @ERP structure.
+
+
+#figure(
+  image("template/demo/figures/Projection/Projection-2conditions/bcne_trial_condition_means_noise4.png", width: 100%),
+  caption: dynamic-caption(
+    [Mean of per-trial two-dimensional @BCNE embeddings for car and face conditions at noise level 4. Despite high per-trial noise, condition mean trajectories remain separable and temporally ordered, with @ERP peak latencies correctly recovered. The grand average is shown as a dashed reference.],
+    [Mean of 2D embeddings per condition at noise level 4.]
+  ),
+) <fig:bcne_trial_condition_means_noise4>
+
+
+
+However, the mean of the per-trial two-dimensional embeddings per condition remained separable even at noise level 4.  These results suggest that the trial-level projection approach is robust at the level of condition mean, but single-trial trajectory visualizations may not be visually interpretable.
 
 
 
@@ -848,26 +849,27 @@ The first type was a flat trial, in which all 32 channels were set to zero throu
 #figure(
   image("template/demo/figures/outliers/outlier_test_noise.png", width: 80%),
   caption: dynamic-caption(
-    [Noise outlier trajectory (red dots) preserves the @ERP loop shape but is displaced outside the normal trial cloud. Raw @EEG shows broadband noise across all 32 channels with no identifiable @ERP components.],
+    [Noise outlier trajectory (red dots) displaced from the normal trial cloud. Raw @EEG shows  noise across all 32 channels with no identifiable @ERP components.],
     [Noise outlier trial in @BCNE embedding space.]
   ),
 ) <fig:outlier_test_noise>
 
-The second type was a noise trial, in which the signal was replaced by Gaussian noise with a standard deviation of 4 µV across all 32 channels. As shown in @fig:outlier_test_noise, the resulting trajectory preserved the general loop shape of the grand average but was displaced outside the normal trial cloud. The raw @EEG showed broadband noise with no identifiable @ERP components, indicating that noise-corrupted trials occupied a geometrically distinct region of the embedding space.
+The second type was a noise trial, in which the signal was replaced by Gaussian noise with a standard deviation of 4 µV across all 32 channels. As shown in @fig:outlier_test_noise, the resulting trajectory preserved the general loop shape of the grand average but was randomly displaced in two-dimensional embedding space. The raw @EEG showed noise with no identifiable @ERP components, indicating that noise-corrupted trials occupied a geometrically distinct region of the embedding space.
 
-Together, these results confirmed that the @BCNE projection approach captures the trial's underlying nature directly from its two-dimensional embedding space, without requiring labels or manual inspection. A collapsed point indicates signal loss, while irregularly scattered embedding indicates noise corruption. 
+Together, these results confirmed that the @BCNE projection approach captures the trial's underlying structure directly from its two-dimensional embedding space, without requiring labels or manual inspection. A collapsed point indicates signal loss, while irregularly scattered embedding indicates noise corruption. 
 
 #figure(
-  image("template/demo/figures/Projection/Projection-2conditions/bcne_outliers.png", width: 100%),
+  image("template/demo/figures/Projection/Projection-2conditions/bcne_outliers.png", width: 80%),
   caption: dynamic-caption(
-    [An outlier trial and a typical trial projected into the two-dimensional @BCNE embedding space, alongside the outlier score distribution for the ten-condition design. Trials exceeding the detection threshold of 2.677 are flagged as outliers.],
-      [Outlier score distribution for 10-condition dataset]
+    [An outlier trial and a typical trial projected into the two-dimensional @BCNE embedding space, alongside the outlier score distribution for the two-condition design. Trials exceeding the detection threshold of 2.677 are flagged as outliers.],
+      [Outlier score distribution for 2-condition dataset]
 
   ),
 ) <fig:bcne_outliers_2conditions>
 
-To analyze outlier trials detection beyond visual inspection, an outlier scoring pipeline was implemented. 
-Each trial was projected through the fixed @BCNE coordinate system after winsorization, and its deviation from the condition mean trajectory was calculated as the mean Euclidean distance across all time points in the two-dimensional embedding space. Trials exceeding the mean plus three standard deviations were flagged as outliers. As shown in @fig:bcne_outliers_2conditions, the outlier score distribution for the ten-condition design showed that 11 trials exceeded the detection threshold of 2.677. The worst outlier, with a score of 3.362, produced a trajectory that deviated substantially from the condition mean, while a typical trial closely followed the expected loop. The majority of trials clustered below 2.0, confirming that geometrically deviant trials formed a distinct tail in the distribution and were identifiable without manual inspection.
+To analyze outlier trial detection beyond visual inspection, an outlier scoring pipeline was implemented. 
+
+Each trial was projected through the fixed @BCNE coordinate system (without winsorization), and its deviation from the condition mean trajectory was calculated as the mean Euclidean distance across all time points in the two-dimensional embedding space. Trials exceeding the mean plus three standard deviations were flagged as outliers. As shown in @fig:bcne_outliers_2conditions, the outlier score distribution for the two-condition dataset showed that 11 trials exceeded the detection threshold of 2.677. The worst outlier, with a score of 3.362, produced a trajectory that deviated substantially from the condition mean, while a typical trial closely followed the expected loop. The majority of trials clustered below 2.0, confirming that geometrically deviant trials formed a distinct tail in the distribution and were identifiable without manual inspection.
 
 
 #pagebreak()
@@ -896,19 +898,23 @@ Each trial was projected through the fixed @BCNE coordinate system after winsori
 
 
 == Qualitative Comparison
-=== Continuity and smoothness of trajectories:
 As shown in @tbl:comparison, BCNE and T-PHATE are the only methods that
 preserve all three properties: temporal order, condition separation, and
 trajectory smoothness.
 
 
+=== Continuity and smoothness of trajectories:
+
+As shown in @fig:fig_time_car_2cond and in @fig:fig3_time_animal_4cond, both @T-PHATE and @BCNE produced trajectories where time points followed a clear direction from the start of stimulus to the end, preserving the temporal order of the @ERP. In @T-PHATE, each time point is connected to its neighbors through a diffusion process, which naturally produces smooth, continuous loops. In @BCNE, each time point is averaged with its temporally correlated neighbors before training, so time points that are close in time and have similar brain activity end up close together in the embedding. This produces a compact, directed trajectory that becomes tighter at each recursive stage as the model captures increasingly global structure.
+
+
+
 === Condition separation
-The ability to distinguish between different experimental states in a low-dimensional space is another critical metric for evaluating dimensionality reduction techniques. The condition separation visible in @fig:fig_condition_2cond was structurally
+The ability to distinguish between different experimental states in a low-dimensional space is another critical metric for evaluating dimensionality reduction techniques. The condition separation visible in @fig:fig_condition_2cond and @fig:fig_4condition was structurally
 meaningful and the divergence at N170 and N400 corresponded exactly to the
 condition effects in the simulation, confirming that BCNE and T-PHATE recovered known neural differences without being given condition labels.
 
-
-In contrast, @PCA and @tSNE failed to provide clear comparative visualizations. In @PCA , the branches corresponding to different conditions overlapped into the same regions of global variance, making it impossible to detect time evolution or condition differences. UMAP and t-SNE, while capable of forming clusters, often separate identical conditions into various clusters.
+In contrast, @PCA and @tSNE failed to provide clear comparative visualizations. In @PCA , the branches corresponding to different conditions overlapped into the same regions of global variance, making it impossible to detect time evolution or condition differences. @UMAP and @tSNE, while capable of forming clusters, often separate identical conditions into various clusters.
 @PHATE and @T-PHATE share the same diffusion-geometry 
 core mechanism, but only @T-PHATE recovers temporal 
 trajectories, confirming that the temporal diffusion is the key factor distinguishing ordered from 
@@ -917,14 +923,11 @@ fragmented embeddings.
 
 == Quantitative Comparison
 
-Quantitative evaluation of dimensionality reduction embeddings is an open challenge due to the lack of neutral temporal structure preservation.
-
-The metric proposed for @T-PHATE in @refTPHATE is optimized for diffusion-based embeddings, while the metric used in @refBCNE targets condition separability. Hence, neither was designed to evaluate temporal structure preservation as a standalone property.
+Quantitative evaluation of dimensionality reduction embeddings is an open challenge due to the lack of neutral assessment of temporal structure preservation. As the metric proposed for @T-PHATE in @refTPHATE is optimized for diffusion-based embeddings, while the metric used in @refBCNE targets condition separability. Neither was designed to evaluate temporal structure preservation as a standalone property.
 Specifically, @T-PHATE used the @DeMAP metric, which measures how well the low-dimensional embedding preserves diffusion-based affinities from the high-dimensional space @refPHATE. Since @T-PHATE optimized directly for these affinities, @DeMAP favored it by design and therefore is not well-suited as a neutral comparison across all methods.
 
-@BCNE (@refBCNE) used @KNN classification accuracy in the embedding
-space for structure preservation, where the number of neighbors is determined by grid search. However, @KNN accuracy measures condition separability rather than temporal structure, making it unsuitable 
-for evaluating chronological ordering.
+@BCNE used @KNN classification accuracy in the embedding
+space for structure preservation @refBCNE, where the number of neighbors is determined by grid search. However, @KNN accuracy measures condition separability rather than temporal structure, making it unsuitable for evaluating chronological ordering.
 
 Hence, this study evaluates embeddings qualitatively against the known ground truth of the simulated data, where condition separation at N170 and N400 and a continuous gradient at P300 serve as the reference criteria.
 
@@ -937,8 +940,10 @@ Hence, this study evaluates embeddings qualitatively against the known ground tr
 
 This study demonstrated that time-aware dimensionality reduction methods produced qualitatively different and more meaningful embeddings than time-agnostic methods when applied to @ERP structured @EEG data, directly addressing RQ1. @T-PHATE and @BCNE both recovered temporally ordered trajectories with condition-specific divergences at the correct @ERP latencies, while @PCA, @tSNE, @UMAP, and @PHATE yielded fragmented or unordered embeddings that did not reflect the sequential structure of the data.
 
-Both methods explicitly encode temporal autocorrelation, but differ in their core mechanism. @T-PHATE maintains temporal structure throughout the embedding via its dual-view diffusion 
-framework, meaning temporal order continuously shapes the geometry of the final output. @BCNE, by contrast, encodes temporal autocorrelation as a preprocessing transformation applied once before the CNN training stage, after which the model optimizes for similarity preservation without an explicit temporal ordering constraint. @T-PHATE therefore produces geometrically cleaner, more structured loops, while @BCNE produces more compact trajectories.
+Both methods encode temporal autocorrelation, but differ in their core mechanism. @T-PHATE maintains temporal structure throughout the embedding via its dual-view diffusion 
+framework, meaning temporal order continuously shapes the geometry of the final output. @BCNE, by contrast, encodes temporal autocorrelation as a preprocessing transformation applied once before the CNN training stage, after which the model optimizes for pairwise similarities between time points. @T-PHATE therefore produced geometrically cleaner, more structured loops, while @BCNE produces more compact trajectories.
+
+//after which the model optimizes a KL divergence loss over pairwise amplitude similarities between time points
 
 The unsupervised condition separation at N170 and N400 is consistent with the neuroscientific literature, where N170 reflects face-selective processing and N400 reflects semantic processing @KAPPENMAN2021117465. Since @BCNE computes channel correlations at each time point, it captures these topographic differences, which explains why condition separation emerged at exactly these latencies without condition labels being provided.
 
@@ -950,20 +955,15 @@ Addressing RQ2, standard metrics such as trustworthiness and continuity were fou
 == Application
 
 The outlier detection results demonstrated a practical use case that is unique
-to @BCNE among the six methods evaluated. Flat trials and noisy trials produced qualitatively distinct signatures in the embedding space: a flat trial collapsed to a stationary point, while a noise trial preserved the general loop shape but was displaced outside the normal trial cloud. This geometric readability means the nature of the trial data is directly interpretable from the trajectory position.
+to @BCNE among the six methods evaluated. Flat trials and noisy trials produced qualitatively distinct structures in the embedding space: a flat trial collapsed to a stationary point, while a noise trial preserved the general loop shape but was displaced outside the normal trial cloud. This geometric readability means the nature of the trial data is directly interpretable from the trajectory position.
 
-Standard @EEG artifact rejection uses amplitude 
-threshold @Zhang2024, which may fail to distinguish between a 
-large brain response and a muscle artifact 
-of the same size. @BCNE can detect such artifacts through 
-trajectory shape rather than amplitude.
+Standard @EEG artifact rejection uses amplitude threshold @Zhang2024, which may fail to distinguish between a large brain response and a muscle artifact of the same size. @BCNE can detect such artifacts through trajectory shape rather than amplitude.
 
 == Limitations
 Epoch-based input: @T-PHATE and @BCNE were designed for continuous time series
 data. Applying them to epoch-based EEG requires averaging across trials before
 projection, which discards trial-level information in the condition-averaged strategy.
 An equivalent trial-level extension of @UMAP was not evaluated due to time constraints.
-
 
 No neutral temporal quantitative metric: The metrics used in the reference papers @refBCNE and @refTPHATE were not designed to directly evaluate temporal structure preservation, making a neutral comparison unavailable. A dedicated metric for temporal structure preservation would strengthen the conclusions of future work.
 
@@ -980,7 +980,7 @@ Finally, the trial-level projection approach can be extended to @UMAP for compar
 
 Time-aware dimensionality reduction methods produced more meaningful trajectories in two-dimensional embeddings than time-agnostic methods when applied to @ERP structured @EEG data.
 
-A simulated @ERP dataset was generated using UnfoldSim @refunfoldsim, containing four components (P100, N170, P300, N400) with both categorical and continuous condition effects across 32 channels. Six dimensionality reduction methods were evaluated: @PCA, @tSNE, @UMAP, @PHATE, @T-PHATE, and @BCNE, under two approaches: condition-averaged input and single-trial projection via grand average.
+A simulated @ERP dataset was generated using #emph[UnfoldSim] @refunfoldsim, containing four components (P100, N170, P300, N400) with both categorical and continuous condition effects across 32 channels. Six dimensionality reduction methods were evaluated: @PCA, @tSNE, @UMAP, @PHATE, @T-PHATE, and @BCNE, under two approaches: condition-averaged input and single-trial projection via grand average.
 
 The results showed that @T-PHATE and @BCNE recovered temporally ordered trajectories with condition-specific divergences at the simulated @ERP latencies. The comparison between @PHATE and @T-PHATE identified temporal autocorrelation encoding as the key mechanism underlying temporal trajectory preservation. In addition, a single-trial projection framework was developed in which @BCNE model was trained on the grand-average @ERP and subsequently used to project individual trials into a fixed embedding space. This approach supported trial-level condition separation, recovery of continuous effects, and trajectory-based outlier detection without retraining.
 
