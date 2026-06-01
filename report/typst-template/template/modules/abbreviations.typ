@@ -12,7 +12,6 @@
   align(left)[
     = List of Abbreviations
     #v(1em)
-    #set par(spacing: 1.7em)
     #print-glossary(
       abbreviations,
       user-print-title: custom-print-title,

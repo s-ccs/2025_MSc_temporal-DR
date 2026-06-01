@@ -27,5 +27,3 @@
 
 #import "@preview/glossarium:0.5.6": gls, glspl, make-glossary, print-glossary
 #import "@preview/codly:1.3.0": *
-
-

@@ -1,6 +1,5 @@
-#import "utils/general-utils.typ": * 
+#import "utils/global.typ": *
 #import "template/styles.typ": *
-
 #set document(title: "Thesis Proposal") // Note: this title is visible in the PDF viewer
 
 #show: styles
@@ -96,7 +95,7 @@ To assess data simulation using the UnfoldSim package in Julia and use Python pa
 #v(0.3em)
 #set enum(numbering: "A.")
 
-
+/*
 #[
   #show figure: set align(left) 
    + #goal("Simulate continuous continuous EEG data using UnfoldSim.jl.") <goal1>  
@@ -108,7 +107,7 @@ To assess data simulation using the UnfoldSim package in Julia and use Python pa
   + #goal("Discover hidden patterns in each method and state which method provides the clear low-dimensional visualization.") <goal5>
   + #goal("Documenting the steps and procedure for easy understanding.") <goal6>
 ]
-
+*/
 
 
 
@@ -147,7 +146,7 @@ To assess data simulation using the UnfoldSim package in Julia and use Python pa
 - Month 6: Review and documentation.
 
 
-
+/*
 
 #timeliney.timeline(
   show-grid: true,
@@ -176,7 +175,7 @@ To assess data simulation using the UnfoldSim package in Julia and use Python pa
 
 
 
-
+*/
 #line(length: 100%, stroke: gray)
 
 #bibliography("refs.bib", style: "american-psychological-association")

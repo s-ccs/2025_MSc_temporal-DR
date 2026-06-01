@@ -2,6 +2,7 @@
 // which are used within all the chapters:
 #import "utils/global.typ": *
 #import "utils/caption.typ": dynamic-caption
+#import "utils/general-utils.typ": *
 
 
 #let abstract = [Electroencephalographic (EEG) data is a high-dimensional, noisy time series capturing the continuous evolution of neural response patterns. Dimensionality reduction methods such as @PCA and @tSNE have been used to analyze such data; however, they group time points by amplitude similarity rather than temporal order, making them unable to preserve the sequential structure. Existing time-aware approaches, such as @T-PHATE and @BCNE, address this by explicitly encoding temporal autocorrelation into the embedding, yet both have only been demonstrated on continuous recordings such as fMRI and not on epoched #[ERP]-structured @EEG data.
@@ -18,7 +19,7 @@ representation of @ERP data and can be used for exploratory analysis of complex 
 // Declaration regarding own work / AI use: adapted from the guidelines of the Computer Science Department, Faculty 5, Uni-Stuttgart 
 
 #let declaration = [
- #include "declaration.typ"
+ #include "template/demo/code-snippets/chapters/declaration.typ"
 ]
 
 // if you have appendices, add them here
@@ -26,8 +27,9 @@ representation of @ERP data and can be used for exploratory analysis of complex 
 
 = Additional Figures
 
-This section contains additional figures that support the results presented but were not shown to maintain narrative focus.
 
+This section contains additional figures that support the results presented but were not shown to maintain narrative focus.
+#counter(figure.where(kind: image)).update(0)
    #figure(
   image("template/demo/figures/neuromaps_erp.png", width: 60%),
   caption: dynamic-caption(
@@ -48,7 +50,7 @@ This section contains additional figures that support the results presented but 
 
 
 
- #include "appendix.typ"
+ #include "template/demo/code-snippets/chapters/appendix.typ"
 
 ]
 
@@ -320,7 +322,7 @@ While @CEBRA is well-suited for hypothesis-driven analysis, its embedding qualit
 
 The ERP dataset was generated using #emph[UnfoldSim] @refunfoldsim, a Julia package for simulation of realistic EEG signals. The simulated data consists of four @ERP components (P100, N170, P300, and N400), each represented by a characteristic waveform, with both categorical and continuous effects included to introduce variation across conditions and trials.
 
-Data were simulated for both 32-channel and 64-channel configurations @Harmening_2022 using #emph[biosemi_32] and #emph[biosemi_64]. The resulting data were epoched into trials and transformed into a long-format representation, where each row corresponds to a time point with associated trial, condition, and continuous labels.
+Data were simulated for both 32-channel and 64-channel configurations @Harmening_2022 using #emph[biosemi_32] and #emph[biosemi_64] (see @tbl:datasets). The resulting data were epoched into trials and transformed into a long-format representation, where each row corresponds to a time point with associated trial, condition, and continuous labels.
 
 
 #figure(
@@ -336,7 +338,7 @@ Data were simulated for both 32-channel and 64-channel configurations @Harmening
     [Continuous levels], [10 (range −5.0 to +5.0)],
     [Sampling frequency], [200 Hz],
     [Experimental design repetition], [50],
-    [Noise level], [1],
+    [Pink noise (noise level) ], [1],
     
   ),
   caption: "Example of simulation parameters to generate the ERP dataset."
@@ -405,21 +407,19 @@ The simulated data was visualized as @ERP plot and topoplot series using #emph[U
   ),
 ) <fig:topoplot>
 
-
-@tbl:datasets presents the four datasets used in the evaluation, each containing different numbers of categorical conditions and continuous variables.
-
 #figure(
   table(
-    columns: (auto, auto, auto, 2.7cm, 2.8cm , auto),
+    columns: (auto, auto, auto, 2.7cm, 2.8cm, auto),
     inset: 7pt,
     align: (left, left, left, left, left, left),
-    [*Dataset*], [*Channels*], [*Trials*], [*Conditions*], [*Continuous levels*], [*Noise level*],
-    [1],  [32], [2000], [2],  [10 ], [1],
-    [2],  [64], [1200], [4], [6 ],  [1],
-    [3],  [64], [1200], [4 ],   [6 ], [4],
-    [4],  [32], [2000], [10 ], [2], [2],
+    [*Dataset*], [*Channels*], [*Trials*], [*Conditions*], [*Continuous levels*], [*Pink noise (noiselevel)*],
+    [1],  [32], [2000], [2],  [10], [1],
+    [2],  [64], [1200], [4],  [6],  [1],
+    [3],  [64], [1200], [4],  [6],  [7],
+    [4],  [32], [2000], [10], [2],  [2],
+    [5],  [32], [2000], [2],  [10], [4],
   ),
-  caption: "Dataset configurations used across the four simulated designs. All datasets share the same time window (0–595 ms)."
+  caption: "Dataset configurations used across the five simulated designs. All datasets share the same time window (0–595 ms)."
 ) <tbl:datasets>
 
 = Implementation 
@@ -553,7 +553,7 @@ condition-averaged strategy. By averaging across trials before embedding, trial-
 
 To assess the interpretability of the proposed approaches, simulated @ERP datasets were used with experimental designs of increasing complexity  2, 4, and 10 categorical conditions, combined with a continuous variable. This progressive design assessed how well the approach distinguishes different conditions in the embedding space as experimental complexity increased.
 
-Across all four datasets, @T-PHATE and @BCNE consistently recovered temporally ordered trajectories with condition divergences at the correct @ERP latencies, while time-agnostic methods produced fragmented embeddings. The following sections document this pattern across increasing design complexity. 
+Across all datasets (as shown in @tbl:datasets), @T-PHATE and @BCNE consistently recovered temporally ordered trajectories with condition divergences at the correct @ERP latencies, while time-agnostic methods produced fragmented embeddings. The following sections document this pattern across increasing design complexity. 
 
 == Average by Condition
 === Condition Separation
@@ -653,10 +653,10 @@ Dataset 3 as listed in @tbl:datasets used a higher noise level, allowing assessm
 #figure(
   image("template/demo/figures/AvgByCondition/4conditions-noise7/4conditions_noise7_64ch_recursive.png", width: 70%),
    caption: dynamic-caption(
-    [@BCNE condition separation for the four-condition design at noise level 4 shown across 
+    [@BCNE condition separation for the four-condition design (Dataset 3, see @tbl:datasets) across 
     all four recursive stages, m1 to m4. Condition separation remains visible 
     across stages despite increased noise.],
-    [@BCNE condition separation under high noise, noise level 4.]
+    [@BCNE condition separation under high pink noise]
   ),
 ) <fig:bcne_noise_4cond>
 
@@ -666,7 +666,7 @@ The four conditions remained distinguishable in the embedding space,
 though with greater overlap compared to the lower-noise design 
 in @fig:bcne_condition_recursive_2cond. The recursive refinement from m1 to m4 continued to 
 improve separation progressively, suggesting the model learns increasingly 
-discriminative features at each stage.
+discriminative features at each stage
 
 
 
@@ -676,10 +676,10 @@ discriminative features at each stage.
   caption: dynamic-caption(
     [Condition separation embeddings produced by all six methods for the 
     four-condition design (animal, car, face, house) under high noise 
-    conditions (noise level 4). @T-PHATE and @BCNE maintain visible 
+    conditions (high pink noise as in @tbl:datasets). @T-PHATE and @BCNE maintain visible 
     condition separation despite increased noise, while time-agnostic 
     methods show further fragmentation.],
-    [Condition separation for the four-condition design, noise level 4.]
+    [Condition separation for the four-condition design with high pink noise .]
   ),
 )<fig:fig_condition_4cond_noise7>
 
@@ -687,7 +687,7 @@ discriminative features at each stage.
 #figure(
   image("template/demo/figures/AvgByCondition/4conditions-noise7/metrics_table_4cond_noise7.png", width: 100%),
   caption: dynamic-caption(
-    [Quantitative comparison of all six methods under higher noise conditions (noise level 4). 
+    [Quantitative comparison of all six methods under higher noise conditions (Dataset 3, see @tbl:datasets). 
     @BCNE m4 achieved the highest @KNN accuracy (0.599), outperforming all other methods. 
     Trustworthiness and continuity remained high across all methods, consistent with the 
     lower-noise results.],
@@ -697,7 +697,7 @@ discriminative features at each stage.
 
 
 As shown in @fig:metrics_noise_4cond_noise7 and @fig:fig_condition_4cond_noise7, @BCNE recursive stage m4 achieved the highest 
-@KNN accuracy of 0.599 under the higher noise level, outperforming all 
+@KNN accuracy of 0.599 under the higher noise level (Dataset 3, see @tbl:datasets), outperforming all 
 other methods, including @T-PHATE (0.48). Compared to the lower-noise results in @fig0_metrics_table-4cond, @KNN accuracy decreased across all methods under higher noise, while 
 trustworthiness and continuity remained consistently high, indicating that these standard metrics were not able to distinguish between the conditions in high-noise data.
 
@@ -713,7 +713,7 @@ As shown in @fig:bcne_condition_2cond, the car and face condition mean trajector
 #figure(
   image("template/demo/figures/Projection/Projection-2conditions/bcne_condition.png", width: 100%),
   caption: dynamic-caption(
-    [@BCNE trial-level projection for the two-condition design with low noise (noise level 1). Conditional mean trajectories for car and face diverge at the @ERP components where condition effects were simulated, following a shared path through the P100 window where no condition effect was present.],
+    [@BCNE trial-level projection for the two-condition design with low noise (noise level 1, Dataset 1, see @tbl:datasets). Conditional mean trajectories for car and face diverge at the @ERP components where condition effects were simulated, following a shared path through the P100 window where no condition effect was present.],
     [@BCNE trial-level projection for the two-condition design.]
   ),
 ) <fig:bcne_condition_2cond>
@@ -810,24 +810,24 @@ levels separating in smooth, orderly steps consistent with the simulation.
 As a linear baseline, @PCA was trained on the same grand average and projected in the same way as @BCNE, as shown in @fig:pca_conditions and @fig:pca_continuous. The condition trajectories appeared visually separated at the correct latencies. However, this separation is not a result of temporal structure preservation by @PCA. @PCA identifies directions of maximum variance in the grand average, and since the grand average already contains temporally ordered @ERP structure, the principal components tend to align with that structure. The method itself has no mechanism for encoding temporal order. Compared to @BCNE, the @PCA trajectories were more angular and less smooth, reflecting the linear nature of the projection.
 
 
-=== Robustness to Noise
+=== Robustness to Noise //pricheck
 
 At low noise, @BCNE individual trial trajectories formed compact clouds around the condition mean, with condition separation clearly visible in the embedding space. 
 
-At higher noise levels (noise level 4), individual trial trajectory visualization becomes uninformative as noise dominates signals. This occurs because each individual trial has a lower signal-to-noise ratio than the grand average, causing its projected position to be determined more by noise than by the underlying @ERP structure.
+At higher noise levels (Dataset 5, see @tbl:datasets), individual trial trajectory visualization becomes uninformative as noise dominates signals. This occurs because each individual trial has a lower signal-to-noise ratio than the grand average, causing its projected position to be determined more by noise than by the underlying @ERP structure.
 
 
 #figure(
   image("template/demo/figures/Projection/Projection-2conditions/bcne_trial_condition_means_noise4.png", width: 100%),
   caption: dynamic-caption(
-    [Mean of per-trial two-dimensional @BCNE embeddings for car and face conditions at noise level 4. Despite high per-trial noise, condition mean trajectories remain separable and temporally ordered, with @ERP peak latencies correctly recovered. The grand average is shown as a dashed reference.],
-    [Mean of 2D embeddings per condition at noise level 4.]
+    [Mean of per-trial two-dimensional @BCNE embeddings for car and face conditions at higher noise level (Dataset 5, see @tbl:datasets). Despite high per-trial noise, condition mean trajectories remain separable and temporally ordered, with @ERP peak latencies correctly recovered. The grand average is shown as a dashed reference.],
+    [Mean of 2D embeddings per condition at high noise level.]
   ),
 ) <fig:bcne_trial_condition_means_noise4>
 
 
 
-However, the mean of the per-trial two-dimensional embeddings per condition remained separable even at noise level 4.  These results suggest that the trial-level projection approach is robust at the level of condition mean, but single-trial trajectory visualizations may not be visually interpretable.
+However, the mean of the per-trial two-dimensional embeddings per condition remained separable even at higher noise.  These results suggest that the trial-level projection approach is robust at the level of condition mean, but single-trial trajectory visualizations may not be visually interpretable.
 
 
 

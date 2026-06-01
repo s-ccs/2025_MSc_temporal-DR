@@ -553,6 +553,7 @@
   set figure(numbering: n => {
     let h1 = counter(heading).get().first()
     numbering("1.1", h1, n)
+   // numbering("1")
   })
 
   set figure.caption(separator: [ -- ])
