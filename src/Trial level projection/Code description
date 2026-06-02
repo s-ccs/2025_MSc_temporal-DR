@@ -5,10 +5,13 @@ The resulting embedding space is then used for projecting individual trials.
 Steps:
 1. Include the simulated data file in the data folder.
    a. Data can be simulated in Julia using Unfoldsim package, refer simulateData.jl file.
-   b. Replace the csv filename with your file in bcne_train.py
-For BCNE (non linear dimensionality reduction):
+   b. Replace the csv filename with your file in main.py
+
+For BCNE:
 2. Run python bcne_train.py for training global average of all trials.
 3. Run python trial_analysis for projecting individual trials through the trained model.
 4. For visualisation purpose, trial_analysis will project 200 trials to have clean visuals and to avoid clutter.
-For PCA (linear dimensionality reduction)
-5. Run pca.py for comparison.
+
+For PCA (baseline comparison)
+1. Replace the csv filename with your file in main.py
+2.Run pca.py for comparison.
