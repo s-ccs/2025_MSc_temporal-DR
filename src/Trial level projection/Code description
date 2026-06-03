@@ -15,3 +15,6 @@ For BCNE:
 For PCA (baseline comparison)
 1. Replace the csv filename with your file in main.py
 2.Run pca.py for comparison.
+
+For outlier testing
+Run outlier_test.py to validate projections for flat and noise outliers.
