@@ -1,51 +1,47 @@
 # **MSc-Thesis:** Evaluating Temporal Dimensionality Reduction Methods for ERP-Structured EEG Data
-**Author:** *Benedikt Ehinger*
+**Author:** *Priyanka Ahuja*
 
-**Supervisor(s):** *Vladimir Mikheev*
+**Supervisor(s):** *Vladimir Mikheev* , *Benedikt Ehinger*
 
 **Year:** *2026*
 
 ## Project Description
-> Electroencephalographic data is a very high-dimensional, complex, and noisy time-series record of 
-neural activity. These signals contain meaningful information about how the brain states change over 
-time, but their complexity makes it a challenge to analyze and visualize them directly. The information 
-contained within this massive dataset is encoded in the continuous temporal flow of brain states. Such 
-high-dimensionality and complexity, including the various features, present a fundamental barrier to 
-robust visualization and analysis. 
-
-To study and identify the patterns of neural activity, also known as 
-manifolds, dimensionality reduction methods are used to simplify the data while keeping the important 
-information about how brain states evolve over time (Perich et al., 2025).
-More recent approaches, such as PHATE (Potential of Heat-diffusion for Affinity-based Transition 
-Embedding), T-PHATE (Temporal-PHATE), and BCNE (Brain-dynamic Convolutional-Network-based Embedding) are designed to better preserve the temporal and structural relationships 
-in neural data. 
-
-In this research, we will compare these advanced, time-aware algorithms along with 
-standard dimensionality reduction approaches like PCA (Principal Component Analysis) and t-SNE. 
-The goal is to identify which method can provide the most accurate data of brain states.
+> EEG data recorded during cognitive experiments produces short, stimulus-locked epochs (ERPs) that repeat across hundreds of trials. Standard dimensionality reduction methods like PCA and t-SNE treat each time point as independent, grouping them by amplitude similarity rather than temporal order, losing the sequential structure that makes ERP data meaningful.
+This project adapts two time-aware methods, T-PHATE and BCNE, to ERP-structured EEG data and evaluates whether encoding temporal autocorrelation into the embedding produces more faithful representations than time-agnostic approaches. ERP components were simulated using UnfoldSim with four components (P100, N170, P300, N400) across categorical conditions and a continuous variable.
+Two pipelines are implemented. The first averages trials per condition group and compares all six methods (PCA, t-SNE, UMAP, PHATE, T-PHATE, BCNE) on the clean ERP input. The second trains BCNE on the grand average and projects every individual trial through the fixed coordinate system, enabling trial-level visualisation, continuous effect recovery, and trajectory-based outlier detection without retraining.
 
 ## Zotero Library Path
 >Please provide the link to the Zotero group here or include a `Bib`-File in the `report` folder
 
 ## Instruction for a new student
->Simulate data using Unfoldsim in julia (refer Simulatedata.pynb file)
->Approach: Trial level projection
-1. Approach: Trial level projection
+>Simulate data using Unfoldsim in Julia (refer DataSimulation_UnfoldSim.pynb file). 
+>Approach: Average By condition
+Data Simulation:
+ Include the simulated data file in the data folder.
+   a. Data can be simulated in Julia using Unfoldsim package.
+   b. Replace the csv filename with your file in main.py.
+Steps:
+1. Run python main.py to train the model for condition-continuous groups.
+2. Run python compare_methods.py for comparing the model with PCA, t-SNE, UMAP, PHATE, TPHATE.
+
+Download the zip file in src in Average-By-Condition approach (https://github.com/s-ccs/2025_MSc_temporal-DR/tree/main/src) and run python main.py for BCNE training of ERP groups and run python compare_methods.py for comparison across algorithms to get two-dimensional embeddings of PCA, t-SNE, UMAP, PHATE, T-PHATE and BCNE.
+
+>Approach: Trial-level projection
+1. Approach: Trial-level projection
 The BCNE model is trained on the grand average ERP of all trials to obtain a clean and stable reference trajectory. 
 The resulting embedding space is then used for projecting individual trials.
 
+Data Simulation:
+Include the simulated data file in the data folder. (Same as in the above approach, the same file can be used)
+   a. Data can be simulated in Julia using Unfoldsim package, refer DataSimulation_UnfoldSim.jl file.
+   b. Replace the csv filename with your file in main.py
+   
+Download the zip file Projection approach in src (https://github.com/s-ccs/2025_MSc_temporal-DR/tree/main/src) 
 Steps:
-1. Include the simulated data file in the data folder.
-   a. Data can be simulated in Julia using Unfoldsim package, refer simulateData.jl file.
-   b. Replace the csv filename with your file in bcne_train.py
-For BCNE (non linear dimensionality reduction):
-2. Run python bcne_train.py for training global average of all trials.
-3. Run python trial_analysis for projecting individual trials through the trained model.
-4. For visualisation purpose, trial_analysis will project 200 trials to have clean visuals and to avoid clutter.
-For PCA (linear dimensionality reduction)
-5. Run pca.py for comparison.
->
-2. Approach: Average By condition
+1. Run python main.py for BCNE training of grand average and individual trial analysis
+2. Run python pca_projection.py for comparison across with PCA.
+3. Run outlier_test.py to test how flat and noise outlier trials appear in the BCNE embedding space
+
 
 
 ## Overview of Folder Structure 
