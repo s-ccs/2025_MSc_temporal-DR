@@ -14,20 +14,20 @@ Two pipelines are implemented. The first averages trials per condition group and
 >Please provide the link to the Zotero group here or include a `Bib`-File in the `report` folder
 
 ## Instruction for a new student
->Simulate data using Unfoldsim in Julia (refer DataSimulation_UnfoldSim.pynb file). 
+Simulate data using Unfoldsim in Julia (refer to DataSimulation_UnfoldSim.pynb file). 
+
 >Approach: Average By condition
 Data Simulation:
  Include the simulated data file in the data folder.
-   a. Data can be simulated in Julia using Unfoldsim package.
-   b. Replace the csv filename with your file in main.py.
+   a. Data can be simulated in Julia using the UnfoldSim package.
+   b. Replace the CSV filename with your file in main.py.
 Steps:
 1. Run python main.py to train the model for condition-continuous groups.
 2. Run python compare_methods.py for comparing the model with PCA, t-SNE, UMAP, PHATE, TPHATE.
 
-Download the zip file in src in Average-By-Condition approach (https://github.com/s-ccs/2025_MSc_temporal-DR/tree/main/src) and run python main.py for BCNE training of ERP groups and run python compare_methods.py for comparison across algorithms to get two-dimensional embeddings of PCA, t-SNE, UMAP, PHATE, T-PHATE and BCNE.
+Download the zip file in the src in the Average-By-Condition approach (https://github.com/s-ccs/2025_MSc_temporal-DR/tree/main/src) and run python main.py for BCNE training of ERP groups and run python compare_methods.py for comparison across algorithms to get two-dimensional embeddings of PCA, t-SNE, UMAP, PHATE, T-PHATE and BCNE.
 
 >Approach: Trial-level projection
-1. Approach: Trial-level projection
 The BCNE model is trained on the grand average ERP of all trials to obtain a clean and stable reference trajectory. 
 The resulting embedding space is then used for projecting individual trials.
 
