@@ -16,7 +16,7 @@ Two pipelines are implemented. The first averages trials per condition group and
 ## Instruction for a new student
 Simulate data using Unfoldsim in Julia (refer to DataSimulation_UnfoldSim.pynb file). 
 
-# Approach: Average By condition
+### Approach: Average By condition
 Data Simulation:
  Include the simulated data file in the data folder.
    a. Data can be simulated in Julia using the UnfoldSim package.
@@ -27,7 +27,7 @@ Steps:
 
 Download the zip file in the src in the Average-By-Condition approach (https://github.com/s-ccs/2025_MSc_temporal-DR/tree/main/src) and run python main.py for BCNE training of ERP groups and run python compare_methods.py for comparison across algorithms to get two-dimensional embeddings of PCA, t-SNE, UMAP, PHATE, T-PHATE and BCNE.
 
-# Approach: Trial-level projection
+### Approach: Trial-level projection
 The BCNE model is trained on the grand-average ERP across all trials to obtain a clean and stable reference trajectory. 
 The resulting embedding space is then used for projecting individual trials.
 
