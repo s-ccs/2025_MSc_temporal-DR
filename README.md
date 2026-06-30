@@ -11,21 +11,21 @@ This project adapts two time-aware methods, T-PHATE and BCNE, to ERP-structured 
 Two pipelines are implemented. The first averages trials per condition group and compares all six methods (PCA, t-SNE, UMAP, PHATE, T-PHATE, BCNE) on the clean ERP input. The second trains BCNE on the grand average and projects every individual trial through the fixed coordinate system, enabling trial-level visualisation, continuous effect recovery, and trajectory-based outlier detection without retraining.
 
 ## Zotero Library Path
->Please provide the link to the Zotero group here or include a `Bib`-File in the `report` folder
+> Refer report/typst-template/refs.bib for bibliography.
 
 ## Instruction for a new student
 Simulate data using Unfoldsim in Julia (refer to DataSimulation_UnfoldSim.pynb file). 
 
-### Approach: Average By condition
+### Approach: Average by condition
 Data Simulation:
  Include the simulated data file in the data folder.
    a. Data can be simulated in Julia using the UnfoldSim package.
    b. Replace the CSV filename with your file in main.py.
 Steps:
 1. Run python main.py to train the model for condition-continuous groups.
-2. Run python compare_methods.py for comparing the model with PCA, t-SNE, UMAP, PHATE, TPHATE.
+2. Run python compare_methods.py to compare the model with PCA, t-SNE, UMAP, PHATE, and TPHATE.
 
-Download the zip file in the src in the Average-By-Condition approach (https://github.com/s-ccs/2025_MSc_temporal-DR/tree/main/src) and run python main.py for BCNE training of ERP groups and run python compare_methods.py for comparison across algorithms to get two-dimensional embeddings of PCA, t-SNE, UMAP, PHATE, T-PHATE and BCNE.
+Download the zip file in the src in the Average-By-Condition approach (https://github.com/s-ccs/2025_MSc_temporal-DR/tree/main/src) and run python main.py for BCNE training of ERP groups, and run python compare_methods.py for comparison across algorithms to get two-dimensional embeddings of PCA, t-SNE, UMAP, PHATE, T-PHATE and BCNE.
 
 ### Approach: Trial-level projection
 The BCNE model is trained on the grand-average ERP across all trials to obtain a clean and stable reference trajectory. 
