@@ -11,7 +11,7 @@ This project adapts two time-aware methods, T-PHATE and BCNE, to ERP-structured 
 Two pipelines are implemented. The first averages trials per condition group and compares all six methods (PCA, t-SNE, UMAP, PHATE, T-PHATE, BCNE) on the clean ERP input. The second trains BCNE on the grand average and projects every individual trial through the fixed coordinate system, enabling trial-level visualisation, continuous effect recovery, and trajectory-based outlier detection without retraining.
 
 ## Zotero Library Path
-> Refer report/typst-template/refs.bib for bibliography.
+> Refer report/typst-template/refs.bib for the bibliography.
 
 ## Instruction for a new student
 Simulate data using Unfoldsim in Julia (refer to DataSimulation_UnfoldSim.pynb file). 
@@ -34,13 +34,13 @@ The resulting embedding space is then used for projecting individual trials.
 Data Simulation:
 Include the simulated data file in the data folder. (Same as in the above approach, the same file can be used)
    a. Data can be simulated in Julia using the UnfoldSim package; refer to the DataSimulation_UnfoldSim.jl file.
-   b. Replace the CSV filename with your file in main.py
+   b. Replace the CSV filename with your file in main.py.
    
 Download the zip file Projection approach in src (https://github.com/s-ccs/2025_MSc_temporal-DR/tree/main/src) 
 Steps:
-1. Run python main.py for BCNE training of the grand average and individual trial analysis
+1. Run python main.py for BCNE training of the grand average and individual trial analysis.
 2. Run python pca_projection.py for comparison with PCA.
-3. Run outlier_test.py to test how flat and noisy outlier trials appear in the BCNE embedding space
+3. Run outlier_test.py to test how flat and noisy outlier trials appear in the BCNE embedding space.
 
 
 
